@@ -315,9 +315,16 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .sug.c-warn .act,.sug.c-emo .act{color:var(--note-amber)}
 .sug.c-evid.focus,.sug.c-pola.focus{border-color:var(--note-blue);box-shadow:0 8px 22px -14px rgba(95,118,184,.45)}
 .sug.c-warn.focus,.sug.c-emo.focus{border-color:var(--note-amber);box-shadow:0 8px 22px -14px rgba(168,134,92,.45)}
+.sug.reveal-pending{display:none}
+.sug.reveal-show{display:block;animation:suggestionIn .48s var(--ease) both}
+@keyframes suggestionIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 @media (prefers-reduced-motion: reduce){
   .screen.active,.pane.active{animation:none}
+  .sug.reveal-show{animation:none}
   *{transition-duration:.01ms !important}
 }
 </style>
@@ -473,7 +480,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 
     <div class="pane-right" id="sug-panel">
       <div class="score">
-        <div class="score-head"><span class="t">發稿前體檢</span><span class="n">4 項建議</span></div>
+        <div class="score-head"><span class="t">發稿前體檢</span><span class="n" id="review-count">4 項建議</span></div>
         <div class="fact-row"><span class="m-lbl">事實錨定</span><span><b>12</b> 句中 <b>9</b> 句已錨定 · <b class="warn-b">1</b> 句查無依據</span></div>
         <div class="fact-row"><span class="m-lbl">引述來源</span><span><b>4</b> 處：官方 2 · 環團 1 · 學者 1 · <b class="warn-b">未見業者</b></span></div>
         <div class="fact-row"><span class="m-lbl">情緒標注</span><span><b class="warn-b">2</b> 處用詞偏強</span></div>
@@ -501,7 +508,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
       </div>
     </div>
   </div>
-  <div class="statusbar"><span>已檢查 12 句 · 找到佐證 1 處</span><span>稿件僅於本次分析使用，不留存、不進入訓練資料</span></div>
+  <div class="statusbar"><span id="review-status">已檢查 12 句 · 找到佐證 1 處</span><span>稿件僅於本次分析使用，不留存、不進入訓練資料</span></div>
 </section>
 
 <script>
@@ -509,6 +516,7 @@ function goto(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('scr-'+n).classList.add('active');
   window.scrollTo(0,0);
+  if(String(n)==='2')revealSuggestions();
 }
 document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>goto(el.dataset.goto)));
 
@@ -661,11 +669,29 @@ document.querySelectorAll('.act-insert').forEach(btn=>{
     btn.textContent='已插入引用';btn.classList.add('done');
   },{once:true});
 });
-document.getElementById('recheck').addEventListener('click',()=>{
-  const b=document.getElementById('recheck');
-  b.textContent='檢查中⋯';
-  setTimeout(()=>{b.textContent='重新檢查'},1200);
-});
+let reviewTimers=[];
+function revealSuggestions(){
+  reviewTimers.forEach(clearTimeout);reviewTimers=[];
+  const cards=[...document.querySelectorAll('#sug-panel .sug')];
+  const status=document.getElementById('review-status');
+  const count=document.getElementById('review-count');
+  const button=document.getElementById('recheck');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cards.forEach(card=>{card.classList.remove('reveal-show');card.classList.add('reveal-pending')});
+  status.textContent='正在逐句檢查 12 句⋯';count.textContent='分析中';button.textContent='檢查中⋯';
+  if(reduce){
+    cards.forEach(card=>{card.classList.remove('reveal-pending');card.classList.add('reveal-show')});
+    status.textContent='已檢查 12 句 · 找到佐證 1 處';count.textContent=cards.length+' 項建議';button.textContent='重新檢查';return;
+  }
+  cards.forEach((card,i)=>{
+    reviewTimers.push(setTimeout(()=>{
+      card.classList.remove('reveal-pending');card.classList.add('reveal-show');
+      count.textContent='已找到 '+(i+1)+' 項';
+      if(i===cards.length-1){status.textContent='已檢查 12 句 · 找到佐證 1 處';count.textContent=cards.length+' 項建議';button.textContent='重新檢查'}
+    },380+i*520));
+  });
+}
+document.getElementById('recheck').addEventListener('click',revealSuggestions);
 </script>
 </body>
 </html>
