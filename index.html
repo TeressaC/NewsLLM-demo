@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NewsLLM 專家版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B2233;
+  --primary:#2352C9;
+  --primary-deep:#1D42A8;
+  --primary-soft:#5B7BD5;
+  --blue-wash:#EEF3FC;
+  --blue-tint:#DFE9FA;
+  /* 審核語義色（低飽和）：藍灰＝可增強、暖棕＝需注意 */
+  --note-blue:#5F76B8;  --note-blue-wash:#F0F3F9;
+  --note-amber:#A8865C; --note-amber-wash:#F8F3EC;
+  --hl-blue:rgba(137,181,255,.32);
+  --hl-yellow:rgba(255,218,105,.42);
+  --mute:#828A9E;
+  --line:#E8EAF0;
+  --wash:#F5F6F9;
+  --wash-deep:#E8EAF1;
+  --sk:#E8EAF1;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:#fff;color:var(--ink);
+  font-family:'Noto Sans TC',-apple-system,sans-serif;
+  font-weight:400;min-height:100dvh;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+sup{font-size:10px;color:var(--primary);font-weight:500}
+
+/* ===== buttons（三層：primary 漸層浮起 / soft 洗色面 / act 文字＋箭頭） ===== */
+.btn{
+  position:relative;font-size:13px;font-weight:500;border-radius:12px;
+  background:var(--wash);color:var(--ink);padding:9px 18px;min-height:38px;
+  box-shadow:inset 0 0 0 1px rgba(27,34,51,.06);
+  transition:transform .16s var(--ease),background .2s,box-shadow .2s,filter .2s;
+}
+.btn:hover{background:var(--wash-deep)}
+.btn:active{transform:scale(.96)}
+.btn.primary{
+  background:linear-gradient(180deg,#3D63DC,#2549B8);color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 6px 14px -8px rgba(35,73,184,.55);
+}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.soft{background:var(--blue-wash);color:var(--primary);box-shadow:inset 0 0 0 1px var(--blue-tint)}
+.btn.soft:hover{background:var(--blue-tint)}
+.btn.sm{font-size:12px;padding:6px 14px;min-height:32px;border-radius:10px}
+.btn.done{background:var(--wash);color:var(--mute);box-shadow:inset 0 0 0 1px var(--line);pointer-events:none}
+/* 文字動作鈕：箭頭滑動＋下劃線生長 */
+.act{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:12.5px;font-weight:500;padding:2px 0;min-height:auto;border-radius:0;
+  background:none;box-shadow:none;
+  background-image:linear-gradient(currentColor,currentColor);
+  background-repeat:no-repeat;background-size:0% 1.5px;background-position:0 100%;
+  transition:background-size .3s var(--ease);
+}
+.act::after{content:"›";font-family:'Space Grotesk';transition:transform .25s var(--ease)}
+.act:hover{background-size:100% 1.5px}
+.act:hover::after{transform:translateX(3px)}
+.act:active{transform:none}
+.act.done{color:var(--mute) !important;pointer-events:none}
+.act.done::after{content:""}
+.link{font-size:12px;color:var(--primary-soft);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;cursor:pointer}
+
+.lbl{
+  font-size:11.5px;font-weight:400;color:var(--primary);
+  border:1px solid var(--blue-tint);border-radius:6px;padding:2px 9px;
+  white-space:nowrap;background:var(--blue-wash);
+}
+.lbl.fill{background:var(--note-blue-wash);color:var(--primary-soft);border-color:transparent}
+.lbl.source{
+  border:0;background:transparent;color:#7D8493;padding:0;
+  font-size:10.5px;letter-spacing:.04em;
+}
+.lbl.ghost{color:var(--mute);background:#fff;border-color:var(--line)}
+
+.card{
+  border:1px solid var(--line);border-radius:16px;background:#fff;
+  padding:18px 20px;margin-bottom:12px;
+  box-shadow:0 12px 28px -20px rgba(35,43,66,.12);
+}
+.row{display:flex;align-items:center;gap:10px}
+.spread{justify-content:space-between}
+.sec-lbl{font-size:11px;font-weight:500;color:var(--mute);letter-spacing:.18em;margin:26px 0 10px}
+
+/* ===== screens ===== */
+.screen{display:none;min-height:100dvh}
+.screen.active{display:flex;flex-direction:column;animation:fadeUp .5s var(--ease)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ===== topbar ===== */
+.topbar{
+  position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;gap:16px;
+  padding:15px 28px;border-bottom:1px solid var(--line);
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+}
+.wordmark{
+  font-family:'Space Grotesk','Noto Sans TC',sans-serif;
+  font-weight:500;font-size:16.5px;letter-spacing:-0.02em;color:var(--ink);white-space:nowrap;
+}
+.wordmark em{font-style:normal;font-weight:600;color:var(--primary)}
+.pro-tag{font-size:10.5px;color:var(--mute);letter-spacing:.22em;white-space:nowrap}
+.trust-note{
+  font-size:10.5px;color:#747D90;white-space:nowrap;padding-left:12px;
+  border-left:1px solid var(--line);letter-spacing:.02em;
+}
+@media(max-width:640px){.trust-note{display:none}}
+.doc-name{font-size:12.5px;color:var(--mute)}
+.mode-pill{display:flex;border:1px solid var(--wash-deep);border-radius:22px;background:var(--wash);padding:2px;gap:2px}
+.mode-pill button{
+  font-size:12.5px;padding:7px 18px;color:var(--mute);
+  border-radius:20px;transition:all .25s var(--ease);min-height:34px;
+}
+.mode-pill button.active{background:#fff;color:var(--primary);font-weight:500;box-shadow:0 2px 8px -3px rgba(35,43,66,.2)}
+.avatar{
+  width:30px;height:30px;border-radius:50%;flex:none;
+  background:#EEF1F6;border:1px solid #E1E5ED;position:relative;
+  display:flex;align-items:center;justify-content:center;
+  color:transparent;font-size:0;
+}
+.avatar::before{
+  content:"";position:absolute;left:10px;top:6px;width:8px;height:8px;
+  border-radius:50%;background:#AAB2C1;
+}
+.avatar::after{
+  content:"";position:absolute;left:6px;bottom:5px;width:16px;height:8px;
+  border-radius:9px 9px 6px 6px;background:#AAB2C1;
+}
+
+/* ===== landing ===== */
+#scr-0{background:linear-gradient(180deg,#F3F7FE 0%,#fff 46%)}
+.hero{max-width:920px;width:100%;margin:0 auto;padding:72px 32px 8px;position:relative}
+.hero-lines{position:absolute;top:56px;right:36px;width:300px;height:60px;opacity:.55;pointer-events:none}
+.hero .kicker{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:12px;font-weight:500;color:var(--primary);letter-spacing:.3em;margin-bottom:16px;
+}
+.hero h1{font-size:30px;font-weight:500;letter-spacing:-.01em;line-height:1.3;margin-bottom:10px}
+.hero .sub{font-size:14px;color:var(--mute);line-height:1.7}
+.mode-cards{
+  max-width:920px;width:100%;margin:36px auto 0;padding:0 32px;
+  display:grid;grid-template-columns:1fr 1fr;gap:18px;
+}
+@media(max-width:640px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{
+  text-align:left;border:1px solid var(--line);border-radius:20px;background:#fff;
+  padding:28px 26px;cursor:pointer;
+  transition:transform .25s var(--ease),border-color .25s,box-shadow .25s;
+  box-shadow:0 16px 36px -24px rgba(35,43,66,.14);
+}
+.mode-card:hover{border-color:var(--primary-soft);transform:translateY(-3px)}
+.mode-card:active{transform:scale(.98)}
+.mode-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:11px;font-weight:500;color:var(--primary);letter-spacing:.2em;margin-bottom:14px;
+}
+.mode-icon{
+  width:46px;height:46px;border-radius:13px;background:var(--blue-wash);
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+}
+.mode-icon svg{width:22px;height:22px;stroke:var(--primary);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.mode-card h3{font-size:19px;font-weight:500;margin-bottom:6px}
+.mode-card .sub{font-size:13px;color:var(--mute);margin-bottom:16px;line-height:1.7}
+.mode-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.mode-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--primary)}
+.mode-cta .arr{transition:transform .25s var(--ease)}
+.mode-card:hover .arr{transform:translateX(4px)}
+.recent{max-width:920px;width:100%;margin:14px auto 40px;padding:0 32px}
+.recent .row{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;color:var(--ink)}
+.recent .when{margin-left:auto;font-size:12px;color:var(--mute)}
+.proto-note{max-width:920px;width:100%;margin:0 auto 28px;padding:0 32px;font-size:10.5px;color:var(--mute);letter-spacing:.08em}
+
+/* ===== workspace ===== */
+.work-body{display:flex;flex:1;max-width:1180px;width:100%;margin:0 auto}
+@media(max-width:760px){.work-body{flex-direction:column}}
+.pane-left{flex:1.12;padding:28px 32px;border-right:1px solid var(--line);display:flex;flex-direction:column}
+@media(max-width:760px){.pane-left{border-right:none;border-bottom:1px solid var(--line)}}
+.pane-right{flex:1;padding:22px 26px}
+.statusbar{
+  border-top:1px solid var(--line);padding:9px 28px;
+  display:flex;gap:14px;align-items:center;background:var(--wash);
+  font-size:11.5px;color:var(--mute);
+}
+
+/* mode 1 */
+.q-text{font-size:19px;font-weight:500;line-height:1.5}
+.a-text{font-size:14px;line-height:1.95;color:#333A4D}
+.src-row{
+  display:flex;align-items:baseline;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line);
+  border-radius:8px;transition:background .3s,box-shadow .3s;font-size:12.5px;color:#333A4D;
+}
+.src-row .t{flex:1;line-height:1.6}
+.src-row .meta{color:var(--mute);white-space:nowrap}
+.src-row.flash{background:var(--blue-wash);box-shadow:inset 0 0 0 1px var(--primary-soft)}
+.dock{
+  display:flex;align-items:center;gap:12px;
+  border:1.5px solid var(--blue-tint);background:var(--blue-wash);
+  border-radius:14px;padding:6px 6px 6px 16px;margin-top:auto;
+}
+.dock .ph{flex:1;font-size:13px;color:var(--mute)}
+.new-q-flow{
+  margin-bottom:18px;border:1px solid var(--line);border-radius:16px;
+  padding:18px;background:#fff;box-shadow:0 14px 30px -25px rgba(35,43,66,.22);
+}
+.new-q-flow h2{font-size:17px;font-weight:500;margin-bottom:5px}
+.flow-steps{display:flex;gap:6px;margin:14px 0 16px}
+.flow-step{flex:1;font-size:11px;color:var(--mute);padding-top:8px;border-top:2px solid var(--line)}
+.flow-step.active{color:var(--primary);border-color:var(--primary)}
+.q-compose{display:flex;gap:8px;align-items:flex-end}
+.q-compose textarea{flex:1;min-height:72px;resize:vertical;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font:inherit;font-size:13px;line-height:1.6;outline:none}
+.q-compose textarea:focus{border-color:var(--primary-soft);box-shadow:0 0 0 3px var(--blue-wash)}
+.q-suggests{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.q-chip{font-size:12px;color:#566078;background:var(--wash);padding:7px 10px;border-radius:9px;text-align:left}
+.q-chip:hover{background:var(--blue-wash);color:var(--primary)}
+.ptabs{
+  display:flex;background:var(--wash);border:1px solid var(--wash-deep);
+  border-radius:13px;margin-bottom:14px;padding:3px;gap:3px;
+}
+.ptabs button{
+  flex:1;font-size:12.5px;padding:9px 4px;color:var(--mute);
+  border-radius:10px;transition:all .25s var(--ease);min-height:38px;
+}
+.ptabs button.active{background:#fff;color:var(--primary);font-weight:500;box-shadow:0 3px 10px -4px rgba(35,43,66,.16)}
+.pane{display:none}
+.pane.active{display:block;animation:fadeUp .35s var(--ease)}
+.camp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px}
+.camp-title{font-size:13.5px;font-weight:500}
+.camp-title .who{color:var(--primary)}
+.ctae{display:flex;align-items:baseline;gap:12px;margin:9px 0;font-size:13px;line-height:1.7;color:#333A4D}
+.ctae b{
+  font-size:10.5px;font-weight:500;color:var(--primary);background:var(--blue-wash);
+  border-radius:6px;padding:2px 8px;flex:none;
+}
+.absent{font-size:12.5px;color:var(--mute);padding-top:4px}
+.absent b{font-weight:500;color:var(--ink)}
+.acot-q{font-size:13px;line-height:1.8;color:#333A4D;margin-bottom:4px}
+.acot-a{font-size:12.5px;line-height:1.8;color:#333A4D;background:var(--wash);border-radius:10px;padding:10px 12px;margin-top:10px}
+.timeline-head{display:flex;align-items:flex-end;justify-content:space-between;padding:4px 2px 13px;border-bottom:1px solid var(--line)}
+.timeline-head h3{font-size:14px;font-weight:500}
+.timeline-head span{font-size:11px;color:var(--mute)}
+.tl{list-style:none;margin:0;position:relative}
+.tl::before{content:"";position:absolute;left:91px;top:17px;bottom:17px;width:1px;background:#DCE1EA}
+.tl li{
+  display:grid;grid-template-columns:84px 1fr;gap:15px;padding:15px 2px;position:relative;
+  border-bottom:1px solid var(--line);font-size:13px;line-height:1.65;color:#333A4D;
+}
+.tl li::before{content:"";position:absolute;left:88px;top:24px;width:7px;height:1px;background:#AEB7C7;z-index:1}
+.tl li:last-child{border-bottom:0}
+.tl time{font-family:'Space Grotesk','Noto Sans TC',sans-serif;font-size:11.5px;color:var(--mute);padding-top:2px}
+.tl .event-title{display:block;font-weight:500;color:var(--ink);margin-bottom:2px}
+.tl .event-note{font-size:12px;color:var(--mute)}
+.tl li.now{margin:7px -10px;padding:14px 12px;border:0;border-radius:12px;background:rgba(238,243,252,.88)}
+.tl li.now::before{left:98px;background:var(--primary)}
+.tl li.now time{color:var(--primary);font-weight:600}
+.now-tag{display:inline-block;margin-left:7px;font-size:10px;font-weight:500;color:var(--primary);vertical-align:1px}
+.thinking{display:none;align-items:center;gap:8px;padding:10px 0;color:var(--primary-soft);font-size:12px}
+.thinking.on{display:flex}
+.thinking i{width:6px;height:6px;border-radius:50%;background:var(--primary-soft);animation:bounce 1s infinite}
+.thinking i:nth-child(2){animation-delay:.15s}
+.thinking i:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+/* mode 2（低飽和語義雙色） */
+.draft-kicker{font-size:11px;color:var(--mute);letter-spacing:.12em;margin-bottom:8px}
+.draft-title{font-size:19px;font-weight:500;line-height:1.5;margin-bottom:14px}
+.draft p{font-size:14px;line-height:2.0;color:#333A4D;margin-bottom:10px}
+.mk{
+  border-radius:2px;padding:1px 2px;margin:0 -1px;cursor:pointer;
+  transition:background-size .25s,filter .25s;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  background-repeat:no-repeat;background-position:0 88%;background-size:100% 48%;
+}
+.mk.evid,.mk.pola{background-image:linear-gradient(176deg,transparent 15%,var(--hl-blue) 16%,var(--hl-blue) 82%,transparent 83%)}
+.mk.warn,.mk.emo{background-image:linear-gradient(178deg,transparent 12%,var(--hl-yellow) 13%,var(--hl-yellow) 85%,transparent 86%)}
+.mk.focus{background-size:100% 72%;filter:saturate(1.25)}
+
+.score{padding:4px 2px 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.score-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.score-head .t{font-size:13px;font-weight:500}
+.score-head .n{font-size:11.5px;color:var(--mute)}
+.fact-row{display:flex;align-items:baseline;gap:10px;padding:9px 0;font-size:12.5px;border-bottom:1px solid var(--wash)}
+.fact-row:last-child{border-bottom:none}
+.fact-row .m-lbl{font-size:11px;color:var(--mute);width:56px;flex:none}
+.fact-row b{font-weight:700;color:var(--primary)}
+.fact-row .warn-b{color:var(--note-amber)}
+
+.sug{
+  border:1px solid var(--line);border-radius:14px;background:#fff;
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;
+  transition:border-color .25s,box-shadow .25s,transform .2s var(--ease);
+}
+.sug:active{transform:scale(.988)}
+.sug .sug-head{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.sug .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.sug .cat{font-size:11.5px;color:var(--mute)}
+.sug .dismiss{margin-left:auto;font-size:12px;color:var(--mute);padding:2px 6px}
+.sug .body{font-size:13px;line-height:1.8;color:#333A4D}
+.sug .body q{color:var(--ink);font-style:normal}
+.sug .sug-actions{display:flex;align-items:center;gap:18px;margin-top:10px}
+.sug.c-evid .dot,.sug.c-pola .dot{background:var(--note-blue)}
+.sug.c-evid .act,.sug.c-pola .act{color:var(--note-blue)}
+.sug.c-warn .dot,.sug.c-emo .dot{background:var(--note-amber)}
+.sug.c-warn .act,.sug.c-emo .act{color:var(--note-amber)}
+.sug.c-evid.focus,.sug.c-pola.focus{border-color:var(--note-blue);box-shadow:0 8px 22px -14px rgba(95,118,184,.45)}
+.sug.c-warn.focus,.sug.c-emo.focus{border-color:var(--note-amber);box-shadow:0 8px 22px -14px rgba(168,134,92,.45)}
+
+@media (prefers-reduced-motion: reduce){
+  .screen.active,.pane.active{animation:none}
+  *{transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 0 LANDING ============ -->
+<section class="screen active" id="scr-0">
+  <div class="topbar">
+    <span class="wordmark">News<em>LLM</em></span>
+    <span class="pro-tag">專家版</span>
+    <span class="trust-note" title="由八家公共媒體共同建置，回答可連回具名報導、日期與原文">可溯源公媒聯合資料庫</span>
+    <span style="flex:1"></span>
+    <div class="avatar" role="img" aria-label="帳戶"></div>
+  </div>
+
+  <div class="hero">
+    <svg class="hero-lines" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 44 C 55 44, 70 12, 125 12 S 215 44, 300 20" stroke="#2352C9" stroke-width="1.5" opacity=".45"/>
+      <path d="M0 20 C 62 20, 85 46, 140 46 S 225 14, 300 40" stroke="#2352C9" stroke-width="1.5" opacity=".18"/>
+    </svg>
+    <div class="kicker">NEWSLLM PRO</div>
+    <h1>每一句話，都查得到出處。</h1>
+    <p class="sub">八家公媒可信資料庫 × 多視角查證工具，為新聞專業者打造。</p>
+  </div>
+
+  <div class="mode-cards">
+    <button class="mode-card" data-goto="1">
+      <div class="mode-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></div>
+      <div class="mode-num">MODE 01</div>
+      <h3>查詢事件</h3>
+      <p class="sub">針對一個事件提問，回答附出處與多視角分析</p>
+      <div class="mode-tags"><span class="lbl">出處溯源</span><span class="lbl">POLA 多視角</span><span class="lbl">ACOT</span><span class="lbl">時間線</span></div>
+      <span class="mode-cta">進入 <span class="arr">→</span></span>
+    </button>
+    <button class="mode-card" data-goto="2">
+      <div class="mode-icon"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 13l2.2 2.2L15.5 11"/></svg></div>
+      <div class="mode-num">MODE 02</div>
+      <h3>稿件審查</h3>
+      <p class="sub">貼上自己的稿子，POLA / ACOT 自查＋公媒佐證</p>
+      <div class="mode-tags"><span class="lbl">視角盲點</span><span class="lbl">錨定檢查</span><span class="lbl">公媒佐證</span><span class="lbl">情緒中性</span></div>
+      <span class="mode-cta">進入 <span class="arr">→</span></span>
+    </button>
+  </div>
+
+  <div class="recent">
+    <div class="sec-lbl">最近工作</div>
+    <div class="row"><span class="lbl ghost">查詢</span>廢清法修法草案 各方立場<span class="when">2 小時前</span></div>
+    <div class="row"><span class="lbl ghost">稿件</span>廢棄物專題（草稿）<span class="when">昨天 18:42</span></div>
+  </div>
+  <div class="proto-note">PROTOTYPE — 頁面內容皆為示意資料</div>
+</section>
+
+<!-- ============ 1 查詢事件 ============ -->
+<section class="screen" id="scr-1">
+  <div class="topbar">
+    <button class="wordmark" data-goto="0">News<em>LLM</em></button>
+    <div class="mode-pill">
+      <button class="active">查詢事件</button>
+      <button data-goto="2">稿件審查</button>
+    </div>
+    <span style="flex:1"></span>
+    <button class="btn sm soft" id="new-q">＋ 新的提問</button>
+  </div>
+
+  <div class="work-body">
+    <div class="pane-left">
+      <div id="qa-stream">
+        <div class="sec-lbl" style="margin-top:0">你的提問</div>
+        <p class="q-text">廢清法修法草案在處理什麼問題？各方立場是什麼？</p>
+
+        <div class="sec-lbl">NEWSLLM 的回答</div>
+        <p class="a-text">環境部於 6 月 18 日公布《廢棄物清理法》修正草案，回應近年非法棄置案件持續攀升的問題<sup>[1]</sup>。草案重點包括：罰鍰上限自 300 萬元提高至 3,000 萬元、增訂運具沒入條款，並建立廢棄物流向電子追蹤系統<sup>[1][2]</sup>。環保團體肯定修法方向，但主張應納入土地所有人連帶責任<sup>[2]</sup>；環境部回應，相關條款將在立法院審議階段進一步討論<sup>[1]</sup>。</p>
+
+        <div class="sec-lbl">出處</div>
+        <div class="src-row" id="src-1"><span class="lbl source">公媒知識庫</span><span class="t">[1] 非法棄置廢棄物最重可關 7 年 廢清法三讀納管再生能源設備</span><span class="meta">公視新聞網 · 2026-06-16</span><a class="link" href="https://news.pts.org.tw/article/813233" target="_blank" rel="noopener">原文 ↗</a></div>
+        <div class="src-row" id="src-2"><span class="lbl source">公媒知識庫</span><span class="t">[2] 立院三讀修正廢棄物清理法 非法棄置最重關 7 年</span><span class="meta">中央社 · 2026-06-16</span><a class="link" href="https://www.cna.com.tw/news/aipl/202606160057.aspx" target="_blank" rel="noopener">原文 ↗</a></div>
+      </div>
+
+      <div class="thinking" id="think"><span>NewsLLM 思考中</span><i></i><i></i><i></i></div>
+
+      <div class="dock"><input id="dock-in" class="ph" placeholder="追問這則新聞⋯" style="flex:1;border:none;background:none;outline:none;font:inherit;font-size:13px;color:var(--ink)"><button class="btn sm primary" id="ask-more">追問</button></div>
+    </div>
+
+    <div class="pane-right">
+      <div class="ptabs" id="m1-tabs">
+        <button data-panel="pola" class="active">POLA 多視角</button>
+        <button data-panel="acot">ACOT 拆解</button>
+        <button data-panel="time">時間線</button>
+      </div>
+
+      <div class="pane active" data-pane="pola" id="pola-content">
+        <div class="card">
+          <div class="camp-head"><span class="camp-title">若你是：<span class="who">環境部／地方環保局</span></span><button class="act locate" data-src="src-1" style="color:var(--primary)">在原文中查看</button></div>
+          <div class="ctae"><b>線索</b><span>「罰鍰上限提高十倍、建立流向追蹤」——以重罰宣示治理決心</span></div>
+          <div class="ctae"><b>推論</b><span>希望外界將修法視為對亂象的積極回應</span></div>
+          <div class="ctae"><b>情緒</b><span>積極、展現作為</span></div>
+        </div>
+        <div class="card">
+          <div class="camp-head"><span class="camp-title">若你是：<span class="who">鄰近棄置場的居民</span></span><button class="act locate" data-src="src-2" style="color:var(--primary)">在原文中查看</button></div>
+          <div class="ctae"><b>線索</b><span>「案件年增三成」——身邊的農地可能就是下一個熱點</span></div>
+          <div class="ctae"><b>推論</b><span>擔心罰則再高，棄置早已造成的污染仍無人處理</span></div>
+          <div class="ctae"><b>情緒</b><span>焦慮、不信任</span></div>
+        </div>
+        <p class="absent">缺席聲音：<b>清運業者、再利用處理機構</b> —— 本篇報導未包含其回應</p>
+      </div>
+
+      <div class="pane" data-pane="acot" id="acot-content">
+        <div class="card"><div class="camp-head"><span class="lbl">查來源</span><button class="act acot-run" data-a="src" style="color:var(--primary)">讓 NewsLLM 回答</button></div>
+          <p class="acot-q">這篇報導引用了哪些單位的說法？有沒有清運業者或受罰者的回應？</p></div>
+        <div class="card"><div class="camp-head"><span class="lbl">查事實</span><button class="act acot-run" data-a="fact" style="color:var(--primary)">讓 NewsLLM 回答</button></div>
+          <p class="acot-q">近五年非法棄置案件的實際數據與裁罰結果是什麼？</p></div>
+        <div class="card"><div class="camp-head"><span class="lbl">查角度</span><button class="act acot-run" data-a="angle" style="color:var(--primary)">讓 NewsLLM 回答</button></div>
+          <p class="acot-q">報導聚焦「亂象」，是否忽略了合法處理量能不足的結構性問題？</p></div>
+      </div>
+
+      <div class="pane" data-pane="time" id="time-content">
+        <div class="timeline-head"><h3>修法進程</h3><span>4 個關鍵節點</span></div>
+        <ul class="tl">
+          <li><time>2024.11</time><div><span class="event-title">非法棄置案件突破千件</span><span class="event-note">案件量成為推動修法的重要背景。</span></div></li>
+          <li><time>2025.08</time><div><span class="event-title">環境部啟動公聽程序</span><span class="event-note">修法方向首度進入公開討論。</span></div></li>
+          <li class="now"><time>2026.06</time><div><span class="event-title">修正案完成三讀<span class="now-tag">本篇</span></span><span class="event-note">提高非法棄置刑責，並導入科技執法。</span></div></li>
+          <li><time>後續</time><div><span class="event-title">子法與執行規範待公布</span><span class="event-note">地方執法資源與業者責任仍需持續追蹤。</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><span>已溯源 4/4 句</span><span>資料庫更新至 2026-07-13 09:00</span></div>
+</section>
+
+<!-- ============ 2 稿件審查 ============ -->
+<section class="screen" id="scr-2">
+  <div class="topbar">
+    <button class="wordmark" data-goto="0">News<em>LLM</em></button>
+    <div class="mode-pill">
+      <button data-goto="1">查詢事件</button>
+      <button class="active">稿件審查</button>
+    </div>
+    <span class="doc-name">廢棄物專題（草稿）</span>
+    <span style="flex:1"></span>
+    <button class="btn sm primary" id="recheck">重新檢查</button>
+  </div>
+
+  <div class="work-body">
+    <div class="pane-left draft">
+      <div class="draft-kicker">草稿 · 最後編輯 10 分鐘前</div>
+      <div class="draft-title">廢清法修法草案出爐 非法棄置罰則大幅提高</div>
+      <p>環境部昨日公布《廢棄物清理法》修正草案，全案共四十二條，是近十年幅度最大的一次翻修。</p>
+      <p><span class="mk evid" data-sug="g-evid">環境部統計，去年全國查獲非法棄置案件較前年增加近三成，農地與國有地是主要棄置熱點。</span>草案將罰鍰上限大幅提高，並增訂運具沒入與流向追蹤條款。</p>
+      <p><span class="mk warn" data-sug="g-warn">業界普遍認為，新制上路後小型清運業者將出現倒閉潮。</span><span class="mk pola" data-sug="g-pola">環保團體與地方環保局均對草案表示肯定。</span></p>
+      <p>草案預計於本會期送立法院審議。<span class="mk emo" data-sug="g-emo">面對不肖業者猖獗，鄉間農地已淪為無人聞問的垃圾墳場。</span></p>
+    </div>
+
+    <div class="pane-right" id="sug-panel">
+      <div class="score">
+        <div class="score-head"><span class="t">發稿前體檢</span><span class="n">4 項建議</span></div>
+        <div class="fact-row"><span class="m-lbl">事實錨定</span><span><b>12</b> 句中 <b>9</b> 句已錨定 · <b class="warn-b">1</b> 句查無依據</span></div>
+        <div class="fact-row"><span class="m-lbl">引述來源</span><span><b>4</b> 處：官方 2 · 環團 1 · 學者 1 · <b class="warn-b">未見業者</b></span></div>
+        <div class="fact-row"><span class="m-lbl">情緒標注</span><span><b class="warn-b">2</b> 處用詞偏強</span></div>
+      </div>
+
+      <div class="sug c-evid" id="g-evid">
+        <div class="sug-head"><span class="dot"></span><span class="cat">公媒佐證</span><button class="dismiss">✕</button></div>
+        <p class="body">這句可補上引用：<q>114 年查獲非法棄置 1,204 件，年增 28.7%</q> —— 中央社 · 2026-06-17</p>
+        <div class="sug-actions"><button class="act act-insert">插入引用</button></div>
+      </div>
+      <div class="sug c-warn" id="g-warn">
+        <div class="sug-head"><span class="dot"></span><span class="cat">未錨定聲明</span><button class="dismiss">✕</button></div>
+        <p class="body">「小型清運業者將出現倒閉潮」在八家公媒資料庫中查無依據來源。</p>
+        <div class="sug-actions"><button class="act">查證資料庫</button><button class="act" style="color:var(--mute)">標為自有資訊</button></div>
+      </div>
+      <div class="sug c-pola" id="g-pola">
+        <div class="sug-head"><span class="dot"></span><span class="cat">視角盲點</span><button class="dismiss">✕</button></div>
+        <p class="body">全文僅有官方與環團聲音，未見清運業者、土地所有人的回應。</p>
+        <div class="sug-actions"><button class="act">補充視角素材</button></div>
+      </div>
+      <div class="sug c-emo" id="g-emo">
+        <div class="sug-head"><span class="dot"></span><span class="cat">情緒用詞</span><button class="dismiss">✕</button></div>
+        <p class="body">「猖獗」「垃圾墳場」情緒強度偏高，可能弱化報導中立性。</p>
+        <div class="sug-actions"><button class="act">中性改寫建議</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="statusbar"><span>已檢查 12 句 · 找到佐證 1 處</span><span>稿件僅於本次分析使用，不留存、不進入訓練資料</span></div>
+</section>
+
+<script>
+function goto(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr-'+n).classList.add('active');
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>goto(el.dataset.goto)));
+
+document.querySelectorAll('#m1-tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#m1-tabs button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.querySelectorAll('#scr-1 .pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===b.dataset.panel));
+  });
+});
+document.querySelectorAll('.locate').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.src-row').forEach(s=>s.classList.remove('flash'));
+    const t=document.getElementById(btn.dataset.src);
+    if(t){t.classList.add('flash');t.scrollIntoView({behavior:'smooth',block:'center'});
+      setTimeout(()=>t.classList.remove('flash'),2200);}
+  });
+});
+function askQuestion(qText){
+  const think=document.getElementById('think');
+  if(think.classList.contains('on'))return;
+  think.classList.add('on');
+  setTimeout(()=>{
+    think.classList.remove('on');
+    const d=document.createElement('div');
+    d.innerHTML='<div class="sec-lbl">你的追問</div><p class="q-text" style="font-size:16px">'+qText+'</p>'+
+      '<div class="sec-lbl">NEWSLLM 的回答</div><p class="a-text">草案將非法棄置罰鍰上限自新臺幣 300 萬元提高至 3,000 萬元，並增訂沒入清運車輛的規定；違規土地將公告列管，復原費用由行為人負擔<sup>[1]</sup>。</p>';
+    d.style.animation='fadeUp .5s var(--ease)';
+    document.getElementById('qa-stream').appendChild(d);
+    d.scrollIntoView({behavior:'smooth',block:'start'});
+  },1400);
+}
+document.getElementById('ask-more').addEventListener('click',()=>{
+  const inp=document.getElementById('dock-in');
+  askQuestion(inp.value.trim()||'罰則具體提高了多少？');
+  inp.value='';
+});
+document.getElementById('dock-in').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){e.preventDefault();document.getElementById('ask-more').click();}
+});
+// 新的提問：以可見的三步流程組題、送出、查看結果
+document.getElementById('new-q').addEventListener('click',()=>{
+  const stream=document.getElementById('qa-stream');
+  stream.innerHTML='<section class="new-q-flow"><h2>開始新的提問</h2><p class="a-text" style="color:var(--mute)">先選一個方向，或直接寫下想查的事件。</p>'+
+    '<div class="flow-steps"><span class="flow-step active">選題或輸入</span><span class="flow-step">送出查詢</span><span class="flow-step">查看出處</span></div>'+
+    '<div class="q-compose"><textarea id="new-q-input" aria-label="新的提問" placeholder="例如：廢清法修法後，地方政府要新增哪些執法措施？"></textarea><button class="btn primary" id="new-q-submit">送出</button></div>'+
+    '<div class="q-suggests"><button class="q-chip">長榮航空地勤招募釋出多少職缺？起薪與報名期限為何？</button><button class="q-chip">台灣高鐵對民眾生活型態帶來哪些影響？</button><button class="q-chip">高金素梅涉詐領助理費案的發展時間線</button></div></section>';
+  const input=document.getElementById('new-q-input');
+  input.focus();
+  document.querySelectorAll('.q-chip').forEach(b=>b.addEventListener('click',()=>{input.value=b.textContent;input.focus()}));
+  document.getElementById('new-q-submit').addEventListener('click',()=>{
+    const q=input.value.trim();
+    if(!q){input.focus();input.setAttribute('placeholder','請先輸入想查的問題');return}
+    startNewQA(q);
+  });
+  input.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='Enter')document.getElementById('new-q-submit').click()});
+});
+function startNewQA(qText){
+  const stream=document.getElementById('qa-stream');
+  const think=document.getElementById('think');
+  stream.innerHTML='<div class="sec-lbl" style="margin-top:0">你的提問</div><p class="q-text">'+qText+'</p>';
+  think.classList.add('on');
+  setTimeout(()=>{
+    think.classList.remove('on');
+    const demo=qText.includes('長榮航空')?DEMO_ANSWERS.eva:qText.includes('高鐵')?DEMO_ANSWERS.hsr:qText.includes('高金素梅')?DEMO_ANSWERS.kao:DEMO_ANSWERS.waste;
+    const d=document.createElement('div');
+    d.innerHTML='<div class="sec-lbl">NEWSLLM 的回答</div>'+
+      '<p class="a-text">'+demo.answer+'</p><div class="sec-lbl">出處</div>'+demo.sources;
+    d.style.animation='fadeUp .5s var(--ease)';
+    stream.appendChild(d);
+    renderPanels(demo.key);
+  },1400);
+}
+const DEMO_ANSWERS={
+  eva:{key:'eva',answer:'長榮航空 2025 年第二梯地勤招募釋出近百名職缺，涵蓋客服、財務、資訊安全、航機工程等職類；大學畢業者起薪為 4.3 萬元，報名至 4 月 13 日止，預計 7 至 8 月分批報到<sup>[1]</sup>。',sources:'<div class="src-row"><span class="lbl source">公媒知識庫</span><span class="t">[1] 長榮航空招募近百名地勤 起薪 4.3 萬元</span><span class="meta">中央社 · 2025-04-02</span><a class="link" href="https://www.cna.com.tw/news/ahel/202504020390.aspx" target="_blank" rel="noopener">原文 ↗</a></div>'},
+  hsr:{key:'hsr',answer:'公媒報導將高鐵的影響歸納為「一日生活圈」：城際旅行時間縮短，商務、返鄉與休閒移動更頻繁，也重新分配航空、客運與台鐵的運量。影響並不只在交通效率，也延伸到工作地點選擇、城市交流與區域發展<sup>[1]</sup>。',sources:'<div class="src-row"><span class="lbl source">公媒知識庫</span><span class="t">[1] 建構一日生活圈 高鐵改寫交通史</span><span class="meta">公視新聞網 · 2011-08-02</span><a class="link" href="https://news.pts.org.tw/article/66094" target="_blank" rel="noopener">原文 ↗</a></div>'},
+  kao:{key:'kao',answer:'案件關鍵節點包括：2 月 10 日檢調搜索並約談相關人士；高金素梅因身體不適暫時請回；2 月 13 日再次應訊後以 100 萬元交保。助理張俊傑則因涉多項罪名且有逃亡、串證之虞，遭法院裁定羈押禁見<sup>[1]</sup>。',sources:'<div class="src-row"><span class="lbl source">公媒知識庫</span><span class="t">[1] 高金素梅涉詐領助理費等案 100 萬元交保</span><span class="meta">中央社 · 2026-02-13</span><a class="link" href="https://www.cna.com.tw/news/asoc/202602130246.aspx" target="_blank" rel="noopener">原文 ↗</a></div>'},
+  waste:{key:'waste',answer:'綜合公媒報導，非法棄置反覆發生與合法處理量能、跨縣市流向管理及違法成本有關。此次修法提高刑責並導入科技執法，但後續仍需觀察地方執行資源與清除責任如何落實<sup>[1]</sup>。',sources:'<div class="src-row"><span class="lbl source">公媒知識庫</span><span class="t">[1] 有「廢」難清：廢清法啟動修法，廢棄亂象有解嗎？</span><span class="meta">公視新聞網 · 2025-06-08</span><a class="link" href="https://news.pts.org.tw/article/755076" target="_blank" rel="noopener">原文 ↗</a></div>'}
+};
+const PANEL_DATA={
+  eva:{pola:[['企業招募與用人端','「近百名職缺、跨領域輪調」呈現航空業擴張與人才需求','希望吸引應屆畢業生，強化雇主品牌','積極、期待'],['應屆畢業生與求職者','「起薪 4.3 萬元」是明確條件，但工作地點與職務跨度很大','仍會關心輪班、工時、升遷與實際工作內容','審慎、比較']],acot:[['eva-src','查來源','報導資訊主要來自公司新聞稿，是否有現職員工或勞方觀點？'],['eva-fact','查事實','4.3 萬元起薪包含哪些固定薪資與津貼？不同職類是否相同？'],['eva-angle','查角度','報導強調職缺與薪資，是否忽略工時、輪班和留任情況？']],time:[['2025.04.02','公布第二梯招募','釋出近百名地勤職缺。'],['2025.04.13','報名截止','應徵者需在期限前完成線上報名。'],['2025.07-08','預計分批報到','依專業背景分派工作地點與職類。']]},
+  hsr:{pola:[['跨城通勤與商務旅客','「一日生活圈」降低城際移動的時間成本','工作與居住地不再必須位於同一城市','便利、依賴'],['地方居民與區域發展者','高鐵帶動站區開發，也可能讓資源更集中於少數節點','關注房價、接駁與非高鐵沿線地區是否受益','期待、保留']],acot:[['hsr-src','查來源','報導引用哪些旅客與運輸業者？是否包含非高鐵沿線居民？'],['hsr-fact','查事實','高鐵通車後，航空、客運與台鐵運量實際如何變化？'],['hsr-angle','查角度','「一日生活圈」是否偏重效率，忽略票價與區域落差？']],time:[['2007.01','台灣高鐵通車','西部主要城市進入高速鐵路運輸時代。'],['2008.01','形成一日生活圈','月搭乘人次由 72 萬成長至逾 200 萬。'],['持續發展','站區與接駁擴張','交通便利延伸到居住、工作與區域發展。']]},
+  kao:{pola:[['檢調與司法程序','搜索、約談與交保是偵查程序的公開節點','重點是證據保全、到案說明與後續起訴判斷','審慎、程序導向'],['當事人與支持者','當事人主張案件具有政治目的，支持者關注程序是否公平','希望報導區分司法已確認事實與當事人說法','質疑、關切']],acot:[['kao-src','查來源','報導引用檢方、法院與當事人哪些說法？三者資訊是否清楚區分？'],['kao-fact','查事實','搜索、交保與羈押各代表什麼法律程序，是否等同有罪？'],['kao-angle','查角度','報導是否把偵查進度寫成定罪結果，或忽略無罪推定？']],time:[['2026.02.10','檢調搜索與約談','北檢指揮調查局搜索並通知相關人士到案。'],['2026.02.11','部分被告聲押','助理張俊傑遭法院裁定羈押禁見。'],['2026.02.13','高金素梅交保','再次應訊後以 100 萬元交保。']]},
+  waste:{pola:[['環境部與地方環保局','提高刑責並導入科技執法','希望強化嚇阻與流向管理','積極、展現作為'],['居民與土地所有人','污染清除與責任歸屬仍可能曠日費時','關心既有污染誰負責處理','焦慮、不信任']],acot:[['src','查來源','這篇報導引用哪些單位？是否有清運業者或受罰者回應？'],['fact','查事實','修法提高了哪些刑責，執法與清除責任如何改變？'],['angle','查角度','報導是否忽略合法處理量能不足的結構問題？']],time:[['2024.11','案件突破千件','案件量成為推動修法的重要背景。'],['2025.08','啟動公聽程序','修法方向進入公開討論。'],['2026.06','修正案完成三讀','提高刑責並導入科技執法。'],['後續','子法待公布','地方執法資源仍需持續追蹤。']]}
+};
+function renderPanels(key){
+  const data=PANEL_DATA[key]||PANEL_DATA.waste;
+  document.getElementById('pola-content').innerHTML=data.pola.map(x=>'<div class="card"><div class="camp-head"><span class="camp-title">若你是：<span class="who">'+x[0]+'</span></span></div><div class="ctae"><b>線索</b><span>'+x[1]+'</span></div><div class="ctae"><b>推論</b><span>'+x[2]+'</span></div><div class="ctae"><b>情緒</b><span>'+x[3]+'</span></div></div>').join('');
+  document.getElementById('acot-content').innerHTML=data.acot.map(x=>'<div class="card"><div class="camp-head"><span class="lbl">'+x[1]+'</span><button class="act acot-run" data-a="'+x[0]+'" style="color:var(--primary)">讓 NewsLLM 回答</button></div><p class="acot-q">'+x[2]+'</p></div>').join('');
+  document.getElementById('time-content').innerHTML='<div class="timeline-head"><h3>事件脈絡</h3><span>'+data.time.length+' 個關鍵節點</span></div><ul class="tl">'+data.time.map((x,i)=>'<li class="'+(i===data.time.length-1?'now':'')+'"><time>'+x[0]+'</time><div><span class="event-title">'+x[1]+(i===data.time.length-1?'<span class="now-tag">目前</span>':'')+'</span><span class="event-note">'+x[2]+'</span></div></li>').join('')+'</ul>';
+}
+const ACOT_ANSWERS={
+  src:'<b>來源盤點</b><br>報導主要採用立法院與環境部說法，並交代修法條文；沒有清運業者、土地所有人或受處分者的直接回應。可補訪這三類利害關係人，確認執行成本與責任歸屬。',
+  fact:'<b>可確認與待確認</b><br>可由三讀條文確認：非法棄置事業廢棄物刑期上限提高至 7 年，並導入電子圍籬。稿件中的「案件年增三成」與「追繳率」尚未在本篇來源中找到原始統計，發稿前應另取官方資料。 <a class="link" href="https://www.cna.com.tw/news/aipl/202606160057.aspx" target="_blank" rel="noopener">查看三讀報導 ↗</a>',
+  angle:'<b>替代敘事角度</b><br>目前框架把問題集中在「提高刑責能否嚇阻」。另一個值得追問的角度是：合法處理量能、清運價格與跨縣市流向管理，是否才是非法棄置反覆發生的條件。 <a class="link" href="https://news.pts.org.tw/article/755076" target="_blank" rel="noopener">查看深度報導 ↗</a>',
+  'eva-src':'<b>來源盤點</b><br>主要資訊來自長榮航空新聞稿，適合確認職缺、起薪與日期；若要呈現工作條件，仍需加入現職員工、工會或勞動主管機關資訊。',
+  'eva-fact':'<b>可確認與待確認</b><br>可確認近百名職缺、4.3 萬元起薪及 4 月 13 日截止。薪資組成、各職類輪班制度與實際報到人數，報導未提供。',
+  'eva-angle':'<b>替代敘事角度</b><br>報導採企業招募框架，強調機會與職涯發展。可再從航空業缺工、輪班負荷及人才留任切入。',
+  'hsr-src':'<b>來源盤點</b><br>報導以商務旅客與運輸數據呈現高鐵效應。若討論生活型態，還應加入通勤者、站區居民與非沿線地區的經驗。',
+  'hsr-fact':'<b>可確認與待確認</b><br>通車初期月搭乘人次由 72 萬增至逾 200 萬，國內航空與客運運量受到衝擊；長期區域發展效果需用後續統計另行驗證。',
+  'hsr-angle':'<b>替代敘事角度</b><br>「一日生活圈」強調速度與便利，也可追問票價負擔、接駁落差與站區房價是否讓不同群體承受不同影響。',
+  'kao-src':'<b>來源盤點</b><br>報導同時包含檢方處分、法院裁定與當事人回應。閱讀時應把三種來源分開，避免將任何單一說法視為已確認事實。',
+  'kao-fact':'<b>程序釐清</b><br>交保與羈押都是偵查階段的程序處分，不等於法院已判決有罪。案件結論仍須看後續起訴與審判結果。',
+  'kao-angle':'<b>敘事風險</b><br>若只排列搜索、聲押與交保，容易形成有罪暗示。報導需同步提醒無罪推定，並區分司法文件與政治回應。'
+};
+document.querySelector('.pane-right').addEventListener('click',e=>{
+  const btn=e.target.closest('.acot-run');
+  if(!btn||btn.classList.contains('done'))return;
+  {
+    btn.textContent='已生成回答';btn.classList.add('done');
+    const card=btn.closest('.card');
+    const d=document.createElement('div');
+    d.className='acot-a';
+    d.innerHTML=ACOT_ANSWERS[btn.dataset.a]||'';
+    d.style.animation='fadeUp .45s var(--ease)';
+    card.appendChild(d);
+  }
+});
+function focusPair(mk,sug){
+  document.querySelectorAll('.mk').forEach(x=>x.classList.remove('focus'));
+  document.querySelectorAll('.sug').forEach(x=>x.classList.remove('focus'));
+  if(mk)mk.classList.add('focus');
+  if(sug)sug.classList.add('focus');
+}
+document.querySelectorAll('.mk').forEach(mk=>{
+  mk.addEventListener('click',()=>{
+    const sug=document.getElementById(mk.dataset.sug);
+    focusPair(mk,sug);
+    if(sug)sug.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
+document.querySelectorAll('.sug').forEach(sug=>{
+  sug.addEventListener('click',e=>{
+    if(e.target.closest('.act')||e.target.closest('.dismiss'))return;
+    const mk=document.querySelector('.mk[data-sug="'+sug.id+'"]');
+    focusPair(mk,sug);
+    if(mk)mk.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
+document.querySelectorAll('.dismiss').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const sug=btn.closest('.sug');
+    sug.style.transition='opacity .3s,transform .3s';
+    sug.style.opacity='0';sug.style.transform='translateX(12px)';
+    setTimeout(()=>sug.remove(),320);
+  });
+});
+document.querySelectorAll('.act-insert').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    btn.textContent='已插入引用';btn.classList.add('done');
+  },{once:true});
+});
+document.getElementById('recheck').addEventListener('click',()=>{
+  const b=document.getElementById('recheck');
+  b.textContent='檢查中⋯';
+  setTimeout(()=>{b.textContent='重新檢查'},1200);
+});
+</script>
+</body>
+</html>
