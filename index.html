@@ -87,11 +87,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .lbl.source{border:0;background:transparent;color:#7D8493;padding:0;font-size:10.5px;letter-spacing:.04em}
 .lbl.ghost{color:var(--mute);background:#fff;border-color:var(--line)}
 
-.card{
-  border:1px solid var(--line);border-radius:16px;background:#fff;
-  padding:18px 20px;margin-bottom:12px;
-  box-shadow:0 12px 28px -20px rgba(35,43,66,.12);
-}
+/* 平面為預設，只有真正浮起的元素（下拉、hover、主按鈕）才有陰影 */
 .row{display:flex;align-items:center;gap:10px}
 .sec-lbl{font-size:11px;font-weight:500;color:var(--mute);letter-spacing:.18em;margin:26px 0 10px}
 
@@ -148,11 +144,11 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 }
 .ask-box{
   display:flex;align-items:center;gap:10px;background:#fff;
-  border:1px solid var(--blue-tint);border-radius:18px;padding:8px 8px 8px 20px;
-  box-shadow:0 18px 40px -26px rgba(35,73,184,.45);
+  border:1px solid #DCE3F2;border-radius:16px;padding:8px 8px 8px 20px;
+  box-shadow:0 14px 30px -28px rgba(35,73,184,.4);
   transition:border-color .25s,box-shadow .25s;
 }
-.ask-box:focus-within{border-color:var(--primary-soft);box-shadow:0 18px 44px -24px rgba(35,73,184,.55)}
+.ask-box:focus-within{border-color:var(--primary-soft);box-shadow:0 0 0 3px rgba(35,82,201,.09)}
 .ask-box input{
   flex:1;border:none;outline:none;background:none;font-size:15px;color:var(--ink);
   min-height:42px;
@@ -171,12 +167,14 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
   display:grid;grid-template-columns:1fr 1fr;gap:18px;
 }
 .mode-card{
-  text-align:left;border:1px solid var(--line);border-radius:20px;background:#fff;
+  text-align:left;border:1px solid var(--line);border-radius:18px;background:#fff;
   padding:26px 24px;cursor:pointer;
   transition:transform .25s var(--ease),border-color .25s,box-shadow .25s;
-  box-shadow:0 16px 36px -24px rgba(35,43,66,.14);
 }
-.mode-card:hover{border-color:var(--primary-soft);transform:translateY(-3px)}
+.mode-card:hover{
+  border-color:#C8D4EC;transform:translateY(-2px);
+  box-shadow:0 18px 34px -26px rgba(35,73,184,.35);
+}
 .mode-card:active{transform:scale(.98)}
 .mode-num{
   font-family:'Space Grotesk',sans-serif;
@@ -251,13 +249,14 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .src-row.flash{background:var(--blue-wash);box-shadow:inset 0 0 0 1px var(--primary-soft)}
 .dock{
   display:flex;align-items:center;gap:12px;
-  border:1.5px solid var(--blue-tint);background:var(--blue-wash);
+  border:1px solid var(--line);background:#fff;
   border-radius:14px;padding:6px 6px 6px 16px;margin-top:auto;
-  transition:border-color .25s,box-shadow .25s,background .25s;
+  transition:border-color .25s,box-shadow .25s;
 }
+.dock:focus-within{border-color:var(--primary-soft);box-shadow:0 0 0 3px rgba(35,82,201,.09)}
 .dock input{flex:1;border:none;background:none;outline:none;font-size:13px;color:var(--ink);min-height:34px;min-width:0}
 .dock input::placeholder{color:var(--mute)}
-.dock.flash{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(35,82,201,.12)}
+.dock.flash{border-color:var(--primary);box-shadow:0 0 0 3px rgba(35,82,201,.14)}
 
 .ptabs{
   display:flex;background:var(--wash);border:1px solid var(--wash-deep);
@@ -272,32 +271,37 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .pane{display:none}
 .pane.active{display:block;animation:fadeUp .35s var(--ease)}
 
-/* 多元視角：田字型並列，無上下層級 */
-.pola-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* 多元視角：接縫式田字格 —— 以 1px 縫隙分割，不用四張浮起的卡片 */
+.pola-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;
+}
 .voice{
-  border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px 15px;
-  box-shadow:0 10px 24px -20px rgba(35,43,66,.16);
-  display:flex;flex-direction:column;gap:9px;
+  background:#fff;padding:16px 17px 15px;
+  display:flex;flex-direction:column;gap:8px;
 }
-.voice-head{display:flex;align-items:center;gap:7px}
-.voice-head .who{font-size:13px;font-weight:500;color:var(--ink);line-height:1.4}
-.voice-head .idx{
-  font-family:'Space Grotesk',sans-serif;font-size:10px;color:var(--primary);
-  background:var(--blue-wash);border-radius:5px;padding:2px 6px;flex:none;
-}
-.voice-row{display:flex;gap:8px;align-items:baseline;font-size:12px;line-height:1.65;color:#485069}
-.voice-row b{font-size:10px;font-weight:500;color:var(--mute);flex:none;width:26px;letter-spacing:.05em}
+.voice-head{display:flex;align-items:baseline;gap:8px}
+.voice-head .who{font-size:13px;font-weight:500;color:var(--ink);line-height:1.45}
+.voice-row{display:flex;gap:9px;align-items:baseline;font-size:12px;line-height:1.65;color:#485069}
+.voice-row b{font-size:10px;font-weight:400;color:#A2A8B8;flex:none;width:24px;letter-spacing:.06em}
 .voice-foot{margin-top:auto;padding-top:4px}
-.voice.absent{
-  border-style:dashed;border-color:#CBD2E0;background:repeating-linear-gradient(135deg,#FCFCFE,#FCFCFE 7px,#F7F8FB 7px,#F7F8FB 14px);
-  box-shadow:none;
-}
-.voice.absent .who{color:var(--mute)}
-.voice.absent .idx{background:var(--wash);color:var(--mute)}
+.voice.absent{background:#FAFBFD}
+.voice.absent .who{color:#6E7689}
 .voice.absent .miss{font-size:12px;color:var(--mute);line-height:1.7}
+.tag-absent{
+  margin-left:auto;flex:none;font-size:10px;color:var(--mute);
+  border:1px solid var(--line);border-radius:5px;padding:1px 6px;background:#fff;
+}
 
-/* ACOT */
-.acot-q{font-size:13px;line-height:1.8;color:#333A4D;margin-bottom:4px}
+/* ACOT：與多元視角同一套接縫語言，三題合為一塊 */
+.acot-list{
+  display:grid;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:14px;overflow:hidden;
+}
+.acot-item{background:#fff;padding:15px 17px 16px}
+.acot-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.acot-q{font-size:13px;line-height:1.8;color:#333A4D}
 
 /* 時間脈絡（附來源） */
 .timeline-head{display:flex;align-items:flex-end;justify-content:space-between;padding:4px 2px 13px;border-bottom:1px solid var(--line)}
@@ -384,8 +388,8 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .sug.c-evid .act,.sug.c-pola .act{color:var(--note-blue)}
 .sug.c-warn .dot,.sug.c-emo .dot{background:var(--note-amber)}
 .sug.c-warn .act,.sug.c-emo .act{color:var(--note-amber)}
-.sug.c-evid.focus,.sug.c-pola.focus{border-color:var(--note-blue);box-shadow:0 8px 22px -14px rgba(95,118,184,.45)}
-.sug.c-warn.focus,.sug.c-emo.focus{border-color:var(--note-amber);box-shadow:0 8px 22px -14px rgba(168,134,92,.45)}
+.sug.c-evid.focus,.sug.c-pola.focus{border-color:var(--note-blue);box-shadow:0 0 0 3px rgba(95,118,184,.1)}
+.sug.c-warn.focus,.sug.c-emo.focus{border-color:var(--note-amber);box-shadow:0 0 0 3px rgba(168,134,92,.1)}
 .sug.reveal-pending{display:none}
 .sug.reveal-show{display:block;animation:suggestionIn .48s var(--ease) both}
 @keyframes suggestionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -452,8 +456,8 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 
   .ptabs{margin-bottom:4px}
   .panel-note{margin-bottom:10px;padding-top:6px}
-  .pola-grid{gap:8px}
-  .voice{padding:13px 14px;border-radius:12px}
+  .pola-grid{gap:1px}
+  .voice{padding:14px 15px}
   .hist-menu{width:min(290px,calc(100vw - 44px))}
   .tl li{grid-template-columns:1fr;gap:2px;padding:12px 2px}
   .tl::before,.tl li::before{display:none}
@@ -855,22 +859,22 @@ document.querySelectorAll('#m1-tabs button').forEach(b=>{
 });
 function renderPanels(key){
   const data=PANEL_DATA[key]||PANEL_DATA.waste;
-  const cells=data.pola.map((x,i)=>
-    '<div class="voice"><div class="voice-head"><span class="idx">0'+(i+1)+'</span><span class="who">'+x[0]+'</span></div>'+
+  const cells=data.pola.map(x=>
+    '<div class="voice"><div class="voice-head"><span class="who">'+x[0]+'</span></div>'+
     '<div class="voice-row"><b>線索</b><span>'+x[1]+'</span></div>'+
     '<div class="voice-row"><b>推論</b><span>'+x[2]+'</span></div>'+
     '<div class="voice-row"><b>情緒</b><span>'+x[3]+'</span></div></div>');
   cells.push(
-    '<div class="voice absent"><div class="voice-head"><span class="idx">缺席</span><span class="who">'+data.absent.who+'</span></div>'+
+    '<div class="voice absent"><div class="voice-head"><span class="who">'+data.absent.who+'</span><span class="tag-absent">缺席</span></div>'+
     '<p class="miss">'+data.absent.note+'</p>'+
     '<div class="voice-foot"><button class="act" style="color:var(--primary)" onclick="alert(\'原型示意：將於資料庫檢索這些聲音的相關報導\')">從資料庫尋找</button></div></div>');
   document.getElementById('pola-content').innerHTML='<div class="pola-grid">'+cells.join('')+'</div>';
 
-  document.getElementById('acot-content').innerHTML=data.acot.map(x=>
-    '<div class="card"><div class="camp-head" style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px">'+
+  document.getElementById('acot-content').innerHTML='<div class="acot-list">'+data.acot.map(x=>
+    '<div class="acot-item"><div class="acot-head">'+
     '<span class="lbl">'+x[1]+'</span>'+
     '<button class="act acot-run" data-a="'+x[0]+'" data-q="'+x[2].replace(/"/g,'&quot;')+'" style="color:var(--primary)">送入提問框</button></div>'+
-    '<p class="acot-q">'+x[2]+'</p></div>').join('');
+    '<p class="acot-q">'+x[2]+'</p></div>').join('')+'</div>';
 
   document.getElementById('time-content').innerHTML=
     '<div class="timeline-head"><h3>事件脈絡</h3><span>'+data.time.length+' 個關鍵節點</span></div><ul class="tl">'+
