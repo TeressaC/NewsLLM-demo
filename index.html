@@ -49,6 +49,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 .btn{
   position:relative;font-size:13px;font-weight:500;border-radius:12px;
   background:var(--wash);color:var(--ink);padding:9px 18px;min-height:38px;
+  white-space:nowrap;
   box-shadow:inset 0 0 0 1px rgba(27,34,51,.06);
   transition:transform .16s var(--ease),background .2s,box-shadow .2s,filter .2s;
 }
@@ -390,6 +391,13 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 @keyframes suggestionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 /* ===== 平板 ===== */
+/* 左欄變窄後，出處一行擠不下標題＋媒體＋日期＋連結，改為換行排列 */
+@media(max-width:1024px){
+  .src-row{flex-wrap:wrap;gap:5px;padding:12px 2px}
+  .src-row .t{flex:1 1 100%;order:2}
+  .src-row .meta{order:3;font-size:11.5px}
+  .src-row .link{order:4;margin-left:auto}
+}
 @media(max-width:900px){
   .pola-grid{grid-template-columns:1fr}
   .trust-note{display:none}
@@ -402,34 +410,58 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
   .mode-pill button{padding:7px 13px;font-size:12px}
   .doc-name{display:none}
 
-  .hero{padding:40px 20px 4px}
+  .hero{padding:36px 20px 4px}
   .hero-lines{display:none}
-  .hero h1{font-size:24px}
+  .hero .kicker{font-size:11px;margin-bottom:12px}
+  .hero h1{font-size:24px;margin-bottom:8px}
   .hero .sub{font-size:13px}
   .hero-ask{padding:0 20px;margin-top:20px}
   .ask-box{padding:6px 6px 6px 16px;border-radius:16px}
-  .ask-box input{font-size:14px;min-height:38px}
-  .mode-cards{padding:0 20px;grid-template-columns:1fr;gap:12px;margin-top:26px}
+  /* 16px 以下 iOS Safari 聚焦時會自動放大畫面，故手機一律 16px */
+  .ask-box input{font-size:16px;min-height:40px}
+  .ask-chips{gap:7px;margin-top:10px}
+  .ask-chip{font-size:12.5px;padding:8px 13px}
+  .mode-cards{padding:0 20px;grid-template-columns:1fr;gap:12px;margin-top:24px}
   .mode-card{padding:20px 18px;border-radius:16px}
   .mode-icon{width:40px;height:40px;margin-bottom:12px}
   .mode-card h3{font-size:17px}
+  .mode-card .sub{margin-bottom:14px}
+  .mode-tags{margin-bottom:16px}
   .recent,.proto-note{padding:0 20px}
+  .recent{margin:20px auto 32px}
+  .recent-row{padding:13px 8px;margin:0 -8px}
 
+  /* 直向堆疊時不要讓兩欄再依比例撐高，否則會多出大片空白 */
   .work-body{flex-direction:column}
-  .pane-left{border-right:none;border-bottom:1px solid var(--line);padding:16px 18px 20px}
+  .pane-left,.pane-right{flex:none}
+  .pane-left{border-right:none;border-bottom:1px solid var(--line);padding:14px 18px 18px}
   .pane-right{padding:18px}
+
+  /* 標題與兩顆按鈕在窄螢幕分兩行，避免擠成三行字 */
+  .stream-head{flex-wrap:wrap;gap:10px;padding-bottom:12px}
+  .stream-head .t{flex:1 1 100%;font-size:14px;line-height:1.5}
+  .stream-head .spacer{display:none}
+  .hist-wrap{margin-left:auto}
+
+  .sec-lbl{margin:20px 0 8px}
+  #qa-stream>.sec-lbl:first-child{margin-top:14px !important}
   .q-text{font-size:17px}
   .a-text,.draft p{font-size:14px;line-height:1.9}
-  .src-row{flex-wrap:wrap;gap:6px}
-  .src-row .t{flex:1 1 100%;order:2}
-  .src-row .meta{order:3;font-size:11.5px}
-  .src-row .link{order:4;margin-left:auto}
+  .dock{margin-top:18px;padding:6px 6px 6px 14px}
+  .dock input{font-size:16px;min-height:38px}
+
+  .ptabs{margin-bottom:4px}
+  .panel-note{margin-bottom:10px;padding-top:6px}
+  .pola-grid{gap:8px}
+  .voice{padding:13px 14px;border-radius:12px}
   .hist-menu{width:min(290px,calc(100vw - 44px))}
-  .tl li{grid-template-columns:1fr;gap:2px}
+  .tl li{grid-template-columns:1fr;gap:2px;padding:12px 2px}
   .tl::before,.tl li::before{display:none}
-  .tl li.now{margin:7px 0}
+  .tl li.now{margin:6px 0;padding:12px 12px}
+  .sug{padding:13px 14px}
   .statusbar{padding:9px 18px;font-size:11px;gap:8px}
-  .draft-title{font-size:17px}
+  .draft-kicker{margin-bottom:6px}
+  .draft-title{font-size:17px;margin-bottom:12px}
 }
 @supports(padding:max(0px)){
   @media(max-width:760px){
