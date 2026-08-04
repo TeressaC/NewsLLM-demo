@@ -1,4 +1,4 @@
-const CACHE = 'newsllm-pro-v2';
+const CACHE = 'newsllm-pro-v3';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
