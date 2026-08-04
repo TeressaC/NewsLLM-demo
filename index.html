@@ -185,7 +185,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
   display:flex;align-items:center;justify-content:center;margin-bottom:16px;
 }
 .mode-icon svg{width:22px;height:22px;stroke:var(--primary);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.mode-card h3{font-size:19px;font-weight:500;margin-bottom:6px}
+.mode-card h2{font-size:19px;font-weight:500;margin-bottom:6px}
 .mode-card .sub{font-size:13px;color:var(--mute);margin-bottom:16px;line-height:1.7}
 .mode-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
 .mode-cta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--primary)}
@@ -428,7 +428,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
   .mode-cards{padding:0 20px;grid-template-columns:1fr;gap:12px;margin-top:24px}
   .mode-card{padding:20px 18px;border-radius:16px}
   .mode-icon{width:40px;height:40px;margin-bottom:12px}
-  .mode-card h3{font-size:17px}
+  .mode-card h2{font-size:17px}
   .mode-card .sub{margin-bottom:14px}
   .mode-tags{margin-bottom:16px}
   .recent,.proto-note{padding:0 20px}
@@ -474,6 +474,118 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
   }
 }
 
+/* 稿中標記與建議卡改為原生按鈕，外觀維持不變 */
+.mk{color:inherit}
+.sug{appearance:none;-webkit-appearance:none;font:inherit;color:inherit;text-align:left;display:block;width:100%}
+.sug-locate{
+  margin-left:auto;font-size:10.5px;color:var(--mute);padding:2px 7px;
+  border:1px solid var(--line);border-radius:6px;background:#fff;
+}
+.sug-locate:hover{border-color:var(--mute);color:var(--ink)}
+.sug .dismiss{margin-left:6px}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:5px}
+
+/* 腳註連結 */
+.fn{font-size:10px;font-weight:500;color:var(--primary);text-decoration:none;vertical-align:super;line-height:0}
+.fn:hover{text-decoration:underline;text-underline-offset:2px}
+
+/* 空狀態 / 錯誤狀態 */
+.state{padding:26px 2px;max-width:46ch}
+.state b{display:block;font-size:15px;font-weight:500;color:var(--ink);margin-bottom:7px}
+.state p{font-size:13px;line-height:1.9;color:var(--mute)}
+.state .acts{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+.state.err b{color:var(--note-amber)}
+
+
+/* ---------- 附加檔案 ---------- */
+.dock-attach{
+  width:30px;height:30px;border-radius:9px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mute);transition:background .2s,color .2s;
+}
+.dock-attach:hover{background:var(--wash);color:var(--primary)}
+.dock-attach svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+
+/* ---------- 研究報告入口：貼齊內容的小型行動鈕 ---------- */
+.brief-cta{
+  display:inline-flex;align-items:center;gap:8px;width:auto;
+  margin:16px 0 2px;padding:7px 13px 7px 10px;
+  border:1px solid var(--blue-tint);border-radius:20px;
+  background:linear-gradient(100deg,#F8FAFF,var(--blue-wash));
+  font-size:12.5px;font-weight:500;color:var(--primary);cursor:pointer;
+  transition:border-color .22s var(--ease),background .22s,transform .18s var(--ease);
+}
+.brief-cta:hover{border-color:var(--primary-soft);background:var(--blue-tint)}
+.brief-cta:active{transform:scale(.97)}
+.brief-cta .glyph{display:flex;align-items:center;flex:none}
+.brief-cta .glyph svg{width:18px;height:11px;overflow:visible}
+.brief-cta .glyph path{fill:none;stroke:var(--primary);stroke-width:1.8;stroke-linecap:round}
+.brief-cta .glyph path.b{stroke:var(--primary-soft);opacity:.45}
+.brief-cta .arr{font-size:13px;flex:none;transition:transform .22s var(--ease)}
+.brief-cta:hover .arr{transform:translateX(3px)}
+
+/* ---------- 研究報告文件 ---------- */
+.brief-wrap{flex:1;background:var(--wash);padding:22px 20px 34px}
+.brief{
+  max-width:760px;margin:0 auto;background:#fff;
+  border:1px solid var(--line);border-radius:14px;padding:32px 40px 28px;
+}
+@media(max-width:760px){.brief-wrap{padding:16px 12px 28px}.brief{padding:26px 22px 24px;border-radius:12px}}
+.brief-head{border-bottom:1px solid var(--ink);padding-bottom:13px;margin-bottom:16px}
+.brief-kicker{
+  font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:500;
+  letter-spacing:.28em;color:var(--primary);margin-bottom:12px;
+}
+.brief-head h1{font-size:21px;font-weight:500;line-height:1.35;letter-spacing:-.015em;margin-bottom:8px}
+.brief-meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:11.5px;color:var(--mute)}
+.brief-meta b{font-weight:400;color:var(--ink)}
+
+.bsec{padding:14px 0;border-bottom:1px solid #EFF1F6}
+.bsec:last-child{border-bottom:0}
+.bsec-h{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.bsec-n{font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:.14em;color:var(--primary-soft);flex:none}
+.bsec-h h2{font-size:14.5px;font-weight:500;letter-spacing:-.01em}
+.bsec-h .hint{margin-left:auto;font-size:10.5px;color:var(--mute)}
+
+.b-nut{font-size:15px;line-height:1.7;color:var(--ink);font-weight:500;letter-spacing:-.005em}
+.b-list{list-style:none;display:grid;gap:5px}
+.b-list li{display:grid;grid-template-columns:13px 1fr;gap:9px;font-size:13px;line-height:1.7;color:#333A4D}
+.b-list li::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--primary-soft);margin-top:9px}
+.b-list .ref{font-size:10px;color:var(--primary);vertical-align:super;margin-left:3px}
+
+.b-table{width:100%;border-collapse:collapse;font-size:13px}
+.b-table th,.b-table td{text-align:left;padding:6px 11px;border-bottom:1px solid #EFF1F6;vertical-align:top;line-height:1.6}
+.b-table th{font-size:10.5px;font-weight:500;color:var(--mute);letter-spacing:.08em;white-space:nowrap}
+.b-table td:first-child{font-weight:500;white-space:nowrap;color:var(--ink)}
+.b-table tr:last-child td{border-bottom:0}
+
+.b-time{list-style:none;border-left:2px solid var(--blue-tint);padding-left:16px;margin-left:4px}
+.b-time li{padding:4px 0;font-size:13px;color:#333A4D;position:relative;line-height:1.7}
+.b-time li::before{content:"";position:absolute;left:-21px;top:11px;width:7px;height:7px;border-radius:50%;background:var(--primary-soft)}
+.b-time time{font-family:'Space Grotesk',sans-serif;font-size:11px;color:var(--mute);margin-right:10px}
+
+.b-quote{border-left:2px solid var(--blue-tint);padding:1px 0 1px 14px;margin-bottom:10px}
+.b-quote p{font-size:13.5px;line-height:1.7;color:var(--ink)}
+.b-quote cite{display:block;font-style:normal;font-size:11.5px;color:var(--mute);margin-top:6px}
+
+.b-risk{display:grid;grid-template-columns:13px 1fr;gap:9px;font-size:12.5px;line-height:1.68;color:#333A4D;margin-bottom:6px}
+.b-risk::before{content:"";width:6px;height:6px;border-radius:2px;background:var(--note-amber);margin-top:9px}
+
+.b-src{display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid #EFF1F6;font-size:12.5px;color:#333A4D}
+.b-src:last-child{border-bottom:0}
+.b-src .n{font-family:'Space Grotesk',sans-serif;color:var(--primary);flex:none;width:22px}
+.b-src .t{flex:1;line-height:1.6}
+.b-src .m{color:var(--mute);white-space:nowrap;font-size:11.5px}
+
+.brief-foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:11px;color:var(--mute);line-height:1.8}
+
+@media (prefers-contrast: more){
+  :root{--line:#8C93A6;--wash-deep:#8C93A6;--mute:#5C6478}
+  .voice,.sug,.acot-item,.dock,.mode-card,.card{border-color:#6B7387}
+  .pola-grid,.acot-list{background:#6B7387}
+}
+
 @media (prefers-reduced-motion: reduce){
   .screen.active,.pane.active{animation:none}
   .sug.reveal-show{animation:none}
@@ -485,16 +597,17 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
 
 <!-- ============ 0 首頁 ============ -->
 <section class="screen active" id="scr-0">
-  <div class="topbar">
+  <header class="topbar">
     <span class="wordmark">News<em>LLM</em></span>
     <span class="pro-tag">專家版</span>
     <span class="trust-note" title="由八家公共媒體共同建置，回答可連回具名報導、日期與原文">可溯源公媒聯合資料庫</span>
     <span style="flex:1"></span>
-    <div class="avatar" role="img" aria-label="帳戶"></div>
-  </div>
+    <div class="avatar" aria-hidden="true"></div>
+  </header>
 
+  <main>
   <div class="hero">
-    <svg class="hero-lines" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="hero-lines" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M0 44 C 55 44, 70 12, 125 12 S 215 44, 300 20" stroke="#2352C9" stroke-width="1.5" opacity=".45"/>
       <path d="M0 20 C 62 20, 85 46, 140 46 S 225 14, 300 40" stroke="#2352C9" stroke-width="1.5" opacity=".18"/>
     </svg>
@@ -519,7 +632,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
     <button class="mode-card" data-goto="1">
       <div class="mode-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></div>
       <div class="mode-num">MODE 01</div>
-      <h3>查詢事件</h3>
+      <h2>查詢事件</h2>
       <p class="sub">針對一個事件提問，回答附出處與多元視角分析</p>
       <div class="mode-tags"><span class="lbl">出處溯源</span><span class="lbl">多元視角</span><span class="lbl">追問查證</span><span class="lbl">事件脈絡</span></div>
       <span class="mode-cta">進入 <span class="arr">→</span></span>
@@ -527,7 +640,7 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
     <button class="mode-card" data-goto="2">
       <div class="mode-icon"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 13l2.2 2.2L15.5 11"/></svg></div>
       <div class="mode-num">MODE 02</div>
-      <h3>稿件審查</h3>
+      <h2>稿件審查</h2>
       <p class="sub">貼上自己的稿子，視角與事實自查＋公媒佐證</p>
       <div class="mode-tags"><span class="lbl">視角盲點</span><span class="lbl">錨定檢查</span><span class="lbl">公媒佐證</span><span class="lbl">情緒中性</span></div>
       <span class="mode-cta">進入 <span class="arr">→</span></span>
@@ -541,33 +654,34 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
     <button class="recent-row" data-goto="2"><span class="lbl ghost">稿件</span>廢棄物專題（草稿）<span class="when">昨天 18:42</span></button>
   </div>
   <div class="proto-note">PROTOTYPE — 頁面內容皆為示意資料</div>
+  </main>
 </section>
 
 <!-- ============ 1 查詢事件 ============ -->
 <section class="screen" id="scr-1">
-  <div class="topbar">
+  <header class="topbar">
     <button class="wordmark" data-goto="0">News<em>LLM</em></button>
-    <div class="mode-pill">
-      <button class="active">查詢事件</button>
+    <nav class="mode-pill" aria-label="工作模式">
+      <button class="active" aria-current="page">查詢事件</button>
       <button data-goto="2">稿件審查</button>
-    </div>
+    </nav>
     <span style="flex:1"></span>
-    <div class="avatar" role="img" aria-label="帳戶"></div>
-  </div>
+    <div class="avatar" aria-hidden="true"></div>
+  </header>
 
-  <div class="work-body">
+  <main class="work-body">
     <div class="pane-left">
       <div class="stream-head">
-        <span class="t" id="conv-title">廢清法修法草案 各方立場</span>
+        <h1 class="t" id="conv-title" tabindex="-1">廢清法修法草案 各方立場</h1>
         <span class="spacer"></span>
         <div class="hist-wrap">
           <button class="btn sm" id="hist-btn" aria-haspopup="true" aria-expanded="false">歷史對話</button>
-          <div class="hist-menu" id="hist-menu" role="menu">
+          <div class="hist-menu" id="hist-menu">
             <div class="h">最近 4 筆</div>
-            <button class="hist-item current" data-hist="waste" role="menuitem">廢清法修法草案 各方立場<span>2 小時前 · 4 則出處</span></button>
-            <button class="hist-item" data-hist="hsr" role="menuitem">高鐵與一日生活圈<span>昨天 20:15 · 2 則出處</span></button>
-            <button class="hist-item" data-hist="kao" role="menuitem">助理費案件程序時間線<span>2 天前 · 3 則出處</span></button>
-            <button class="hist-item" data-hist="eva" role="menuitem">長榮航空地勤招募條件<span>上週三 · 1 則出處</span></button>
+            <button class="hist-item current" data-hist="waste">廢清法修法草案 各方立場<span>2 小時前 · 4 則出處</span></button>
+            <button class="hist-item" data-hist="hsr">高鐵與一日生活圈<span>昨天 20:15 · 2 則出處</span></button>
+            <button class="hist-item" data-hist="kao">助理費案件程序時間線<span>2 天前 · 3 則出處</span></button>
+            <button class="hist-item" data-hist="eva">長榮航空地勤招募條件<span>上週三 · 1 則出處</span></button>
           </div>
         </div>
         <button class="btn sm primary" id="new-q">＋ 新的提問</button>
@@ -588,48 +702,51 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
       <div class="thinking" id="think"><span>NewsLLM 思考中</span><i></i><i></i><i></i></div>
 
       <div class="dock" id="dock">
+        <button class="dock-attach" id="attach-btn" type="button" title="上傳檔案一起分析" aria-label="上傳檔案一起分析">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5l-8.4 8.4a5 5 0 0 1-7.1-7.1l8.5-8.5a3.5 3.5 0 0 1 5 5l-8.5 8.4a2 2 0 0 1-2.8-2.8l7.8-7.8"/></svg>
+        </button>
         <input id="dock-in" placeholder="追問這則新聞⋯" aria-label="追問">
         <button class="btn sm primary" id="ask-more">追問</button>
       </div>
     </div>
 
     <div class="pane-right">
-      <div class="ptabs" id="m1-tabs">
-        <button data-panel="pola" class="active">多元視角</button>
-        <button data-panel="acot">追問查證</button>
-        <button data-panel="time">事件脈絡</button>
+      <div class="ptabs" id="m1-tabs" role="tablist" aria-label="分析面板">
+        <button data-panel="pola" class="active" role="tab" id="tab-pola" aria-selected="true" aria-controls="pola-content">多元視角</button>
+        <button data-panel="acot" role="tab" id="tab-acot" aria-selected="false" aria-controls="acot-content">追問查證</button>
+        <button data-panel="time" role="tab" id="tab-time" aria-selected="false" aria-controls="time-content">事件脈絡</button>
       </div>
       <p class="panel-note" id="panel-note">POLA 多視角模組 — 並列呈現不同利害關係人，無優先順序</p>
 
-      <div class="pane active" data-pane="pola" id="pola-content"></div>
-      <div class="pane" data-pane="acot" id="acot-content"></div>
-      <div class="pane" data-pane="time" id="time-content"></div>
+      <div class="pane active" data-pane="pola" id="pola-content" role="tabpanel" aria-labelledby="tab-pola"></div>
+      <div class="pane" data-pane="acot" id="acot-content" role="tabpanel" aria-labelledby="tab-acot"></div>
+      <div class="pane" data-pane="time" id="time-content" role="tabpanel" aria-labelledby="tab-time"></div>
     </div>
-  </div>
-  <div class="statusbar"><span>已溯源 4/4 句</span><span>資料庫更新至 2026-07-13 09:00</span></div>
+  </main>
+  <div class="statusbar"><span id="ask-status">已溯源 4/4 句</span><span>資料庫更新至 2026-07-13 09:00</span></div>
 </section>
 
 <!-- ============ 2 稿件審查 ============ -->
 <section class="screen" id="scr-2">
-  <div class="topbar">
+  <header class="topbar">
     <button class="wordmark" data-goto="0">News<em>LLM</em></button>
-    <div class="mode-pill">
+    <nav class="mode-pill" aria-label="工作模式">
       <button data-goto="1">查詢事件</button>
-      <button class="active">稿件審查</button>
-    </div>
+      <button class="active" aria-current="page">稿件審查</button>
+    </nav>
     <span class="doc-name">廢棄物專題（草稿）</span>
     <span style="flex:1"></span>
     <button class="btn sm primary" id="recheck">重新檢查</button>
-  </div>
+  </header>
 
-  <div class="work-body">
+  <main class="work-body">
     <div class="pane-left draft">
       <div class="draft-kicker">草稿 · 最後編輯 10 分鐘前</div>
-      <div class="draft-title">廢清法修法草案出爐 非法棄置罰則大幅提高</div>
+      <h1 class="draft-title" tabindex="-1">廢清法修法草案出爐 非法棄置罰則大幅提高</h1>
       <p>環境部昨日公布《廢棄物清理法》修正草案，全案共四十二條，是近十年幅度最大的一次翻修。</p>
-      <p><span class="mk evid" data-sug="g-evid">環境部統計，去年全國查獲非法棄置案件較前年增加近三成，農地與國有地是主要棄置熱點。</span>草案將罰鍰上限大幅提高，並增訂運具沒入與流向追蹤條款。</p>
-      <p><span class="mk warn" data-sug="g-warn">業界普遍認為，新制上路後小型清運業者將出現倒閉潮。</span><span class="mk pola" data-sug="g-pola">環保團體與地方環保局均對草案表示肯定。</span></p>
-      <p>草案預計於本會期送立法院審議。<span class="mk emo" data-sug="g-emo">面對不肖業者猖獗，鄉間農地已淪為無人聞問的垃圾墳場。</span></p>
+      <p><a href="#g-evid" class="mk evid" data-sug="g-evid">環境部統計，去年全國查獲非法棄置案件較前年增加近三成，農地與國有地是主要棄置熱點。</a>草案將罰鍰上限大幅提高，並增訂運具沒入與流向追蹤條款。</p>
+      <p><a href="#g-warn" class="mk warn" data-sug="g-warn">業界普遍認為，新制上路後小型清運業者將出現倒閉潮。</a><a href="#g-pola" class="mk pola" data-sug="g-pola">環保團體與地方環保局均對草案表示肯定。</a></p>
+      <p>草案預計於本會期送立法院審議。<a href="#g-emo" class="mk emo" data-sug="g-emo">面對不肖業者猖獗，鄉間農地已淪為無人聞問的垃圾墳場。</a></p>
     </div>
 
     <div class="pane-right" id="sug-panel">
@@ -641,427 +758,994 @@ sup{font-size:10px;color:var(--primary);font-weight:500}
       </div>
 
       <div class="sug c-evid" id="g-evid">
-        <div class="sug-head"><span class="dot"></span><span class="cat">公媒佐證</span><button class="dismiss">✕</button></div>
+        <div class="sug-head"><span class="dot"></span><span class="cat">公媒佐證</span><button class="sug-locate">定位</button><button class="dismiss" aria-label="忽略這項建議"><span aria-hidden="true">✕</span></button></div>
         <p class="body">這句可補上引用：<q>114 年查獲非法棄置 1,204 件，年增 28.7%</q> —— 中央社 · 2026-06-16</p>
         <div class="sug-actions"><button class="act act-insert">插入引用</button></div>
       </div>
       <div class="sug c-warn" id="g-warn">
-        <div class="sug-head"><span class="dot"></span><span class="cat">未錨定聲明</span><button class="dismiss">✕</button></div>
+        <div class="sug-head"><span class="dot"></span><span class="cat">未錨定聲明</span><button class="sug-locate">定位</button><button class="dismiss" aria-label="忽略這項建議"><span aria-hidden="true">✕</span></button></div>
         <p class="body">「小型清運業者將出現倒閉潮」在八家公媒資料庫中查無依據來源。</p>
         <div class="sug-actions"><button class="act">查證資料庫</button><button class="act" style="color:var(--mute)">標為自有資訊</button></div>
       </div>
       <div class="sug c-pola" id="g-pola">
-        <div class="sug-head"><span class="dot"></span><span class="cat">視角盲點</span><button class="dismiss">✕</button></div>
+        <div class="sug-head"><span class="dot"></span><span class="cat">視角盲點</span><button class="sug-locate">定位</button><button class="dismiss" aria-label="忽略這項建議"><span aria-hidden="true">✕</span></button></div>
         <p class="body">全文僅有官方與環團聲音，未見清運業者、土地所有人的回應。</p>
         <div class="sug-actions"><button class="act">補充視角素材</button></div>
       </div>
       <div class="sug c-emo" id="g-emo">
-        <div class="sug-head"><span class="dot"></span><span class="cat">情緒用詞</span><button class="dismiss">✕</button></div>
+        <div class="sug-head"><span class="dot"></span><span class="cat">情緒用詞</span><button class="sug-locate">定位</button><button class="dismiss" aria-label="忽略這項建議"><span aria-hidden="true">✕</span></button></div>
         <p class="body">「猖獗」「垃圾墳場」情緒強度偏高，可能弱化報導中立性。</p>
         <div class="sug-actions"><button class="act">中性改寫建議</button></div>
       </div>
     </div>
-  </div>
+  </main>
   <div class="statusbar"><span id="review-status">已檢查 12 句 · 找到佐證 1 處</span><span>稿件僅於本次分析使用，不留存、不進入訓練資料</span></div>
 </section>
 
+
+<!-- ============ 3 研究報告（Editorial Brief） ============ -->
+<section class="screen" id="scr-3">
+  <header class="topbar">
+    <button class="wordmark" data-goto="0">News<em>LLM</em></button>
+    <button class="btn sm" id="brief-back">← 回到查詢</button>
+    <span class="doc-name" id="brief-topic"></span>
+    <span style="flex:1"></span>
+    <button class="btn sm" id="brief-copy">複製全文</button>
+    <button class="btn sm primary" id="brief-export">匯出</button>
+  </header>
+  <main class="brief-wrap">
+    <article class="brief" id="brief-body"></article>
+  </main>
+  <div class="statusbar"><span id="brief-status"></span><span>報告內容依資料庫檢索結果生成，發稿前仍須人工複核</span></div>
+</section>
+
 <script>
-/* ---------- 資料 ---------- */
-const CONVERSATIONS={
-  waste:{
-    title:'廢清法修法草案 各方立場',
-    question:'廢清法修法草案在處理什麼問題？各方立場是什麼？',
-    answer:'立法院於 6 月 16 日三讀通過《廢棄物清理法》修正案，回應近年非法棄置案件持續攀升的問題<sup>[1]</sup>。修法重點包括：非法棄置事業廢棄物刑責上限提高至 7 年、增訂運具沒入條款，並導入電子圍籬等科技執法工具<sup>[1][2]</sup>。環保團體肯定修法方向，但主張應納入土地所有人連帶責任；主管機關回應，相關細節將於子法階段進一步規範<sup>[2]</sup>。',
-    sources:'<div class="src-row" id="src-1"><span class="lbl source">公媒知識庫</span><span class="t">[1] 非法棄置廢棄物最重可關 7 年 廢清法三讀納管再生能源設備</span><span class="meta">公視新聞網 · 2026-06-16</span><a class="link" href="https://news.pts.org.tw/article/813233" target="_blank" rel="noopener">原文 ↗</a></div>'+
-            '<div class="src-row" id="src-2"><span class="lbl source">公媒知識庫</span><span class="t">[2] 立院三讀修正廢棄物清理法 非法棄置最重關 7 年</span><span class="meta">中央社 · 2026-06-16</span><a class="link" href="https://www.cna.com.tw/news/aipl/202606160057.aspx" target="_blank" rel="noopener">原文 ↗</a></div>'
+/* =====================================================================
+   設定 — 串接 RAG 的四個步驟
+   1. USE_MOCK 改為 false
+   2. API_BASE 填入檢索服務網址
+   3. 下方「MOCK DATA」整段可以註解掉
+   4. normalize() 依實際回傳格式調整欄位對應
+   ===================================================================== */
+const USE_MOCK = true;
+const API_BASE = '';          // 例：'http://192.168.1.20:8000'
+
+/* ===================== 文案與計時（集中管理） ===================== */
+const COPY = {
+  askPh: '追問這則新聞⋯',
+  newQPh: '輸入新的提問⋯',
+  qLabel: '你的提問',
+  followLabel: '你的追問',
+  aLabel: 'NEWSLLM 的回答',
+  srcLabel: '出處',
+  newQLabel: '新的提問',
+  newQHint: '在下方輸入框寫下想查的事件，或先選一個方向。',
+  reviewDone: '已檢查 12 句 · 找到佐證 1 處',
+  reviewChecking: '正在逐句檢查 12 句⋯',
+  recheck: '重新檢查',
+  rechecking: '檢查中⋯',
+  emptyT: '資料庫中找不到相關報導',
+  emptyB: '可以換個說法再試一次，或縮小到具體的人、事、時間範圍。',
+  errT: '目前無法取得回答',
+  errB: '與公媒資料庫的連線發生問題，請稍後再試一次。',
+  retry: '重新查詢',
+  sentToDock: '已送入提問框',
+  inserted: '已插入引用',
+  defaultFollow: '罰則具體提高了多少？'
+};
+const TIMING = { think: 1400, flash: 1800, locate: 2200, revealStart: 380, revealStep: 520, dismiss: 320 };
+
+/* =====================================================================
+   MOCK DATA — 示意資料，串接 RAG 後可整段註解掉
+   （保留作為介面規格的參考：這就是 normalize() 需要產出的形狀）
+   ===================================================================== */
+const MOCK = {
+  waste: {
+    title: '廢清法修法草案 各方立場',
+    question: '廢清法修法草案在處理什麼問題？各方立場是什麼？',
+    answer: '立法院於 6 月 16 日三讀通過《廢棄物清理法》修正案，回應近年非法棄置案件持續攀升的問題[1]。修法重點包括：非法棄置事業廢棄物刑責上限提高至 7 年、增訂運具沒入條款，並導入電子圍籬等科技執法工具[1][2]。環保團體肯定修法方向，但主張應納入土地所有人連帶責任；主管機關回應，相關細節將於子法階段進一步規範[2]。',
+    status: '已溯源 4/4 句',
+    sources: [
+      { n: 1, kind: '公媒知識庫', title: '非法棄置廢棄物最重可關 7 年 廢清法三讀納管再生能源設備', media: '公視新聞網', date: '2026-06-16', url: 'https://news.pts.org.tw/article/813233' },
+      { n: 2, kind: '公媒知識庫', title: '立院三讀修正廢棄物清理法 非法棄置最重關 7 年', media: '中央社', date: '2026-06-16', url: 'https://www.cna.com.tw/news/aipl/202606160057.aspx' }
+    ],
+    voices: [
+      { who: '環境部／地方環保局', clue: '「刑責上限提高至 7 年、導入電子圍籬」', infer: '以重罰與科技執法宣示治理決心', emotion: '積極、展現作為' },
+      { who: '鄰近棄置場的居民', clue: '「案件持續攀升」——身邊農地可能是下一個熱點', infer: '擔心罰則再高，既有污染仍無人清理', emotion: '焦慮、不信任' },
+      { who: '環保團體', clue: '土地所有人責任未納入本次條文', infer: '肯定方向，但認為仍留有執行破口', emotion: '支持但保留' }
+    ],
+    absent: { who: '清運業者、再利用處理機構', note: '本篇報導未收錄其回應；處理量能與清運成本的說法缺席。' },
+    acot: [
+      { key: 'src', kind: '查來源', q: '這篇報導引用了哪些單位的說法？有沒有清運業者或受罰者的回應？' },
+      { key: 'fact', kind: '查事實', q: '修法提高了哪些刑責？執法工具與清除責任具體如何改變？' },
+      { key: 'angle', kind: '查角度', q: '報導聚焦「亂象與重罰」，是否忽略合法處理量能不足的結構問題？' }
+    ],
+    brief: {
+      nut: '立法院三讀通過廢清法修正案，把非法棄置的刑責上限拉高到七年並導入科技執法；爭點已從「罰得夠不夠重」轉向「執行量能與清除責任由誰負擔」。',
+      facts: [
+        { text: '非法棄置事業廢棄物刑責上限由五年提高至七年', ref: [1] },
+        { text: '增訂運具沒入條款，違規清運車輛得予沒入', ref: [1, 2] },
+        { text: '導入電子圍籬等科技執法工具，強化流向追蹤', ref: [1] },
+        { text: '土地所有人連帶責任未納入本次條文，留待子法討論', ref: [2] }
+      ],
+      quotes: [
+        { text: '非法棄置最重可處七年有期徒刑，並得沒入清運工具。', who: '修正條文', src: '公視新聞網 · 2026-06-16' },
+        { text: '修法方向值得肯定，但土地所有人責任沒有寫進去，執行上仍有破口。', who: '環保團體代表', src: '中央社 · 2026-06-16' }
+      ],
+      risks: [
+        '「案件年增三成」在本次檢索的來源中查無原始統計，引用前需另取官方資料。',
+        '報導多為程序性描述，尚無修法後的實際執行成效資料可佐證嚇阻力。',
+        '清運業者與再利用機構的成本說法完全缺席，單方資訊不宜直接推論產業衝擊。'
+      ]
+    },
+    timeline: [
+      { time: '2024.11', title: '非法棄置案件突破千件', note: '案件量成為推動修法的重要背景。', source: '尚無對應報導' },
+      { time: '2025.06', title: '「有『廢』難清」專題報導', note: '公視深度追蹤廢棄物處理鏈與管理破口。', url: 'https://news.pts.org.tw/article/755076', source: '公視新聞網 · 2025-06-08' },
+      { time: '2026.06', title: '修正案完成三讀', note: '提高非法棄置刑責，並導入科技執法。', url: 'https://news.pts.org.tw/article/813233', source: '公視新聞網 · 2026-06-16', now: true },
+      { time: '後續', title: '子法與執行規範待公布', note: '地方執法資源與業者責任仍需持續追蹤。', source: '尚無對應報導' }
+    ]
   },
-  eva:{
-    title:'長榮航空地勤招募條件',
-    question:'長榮航空地勤招募釋出多少職缺？起薪與報名期限？',
-    answer:'長榮航空第二梯地勤招募釋出近百名職缺，涵蓋客服、財務、資訊安全、航機工程等職類；大學畢業者起薪為 4.3 萬元，報名至 4 月 13 日止，預計 7 至 8 月分批報到<sup>[1]</sup>。',
-    sources:'<div class="src-row" id="src-1"><span class="lbl source">公媒知識庫</span><span class="t">[1] 長榮航空招募近百名地勤 起薪 4.3 萬元</span><span class="meta">中央社 · 2025-04-02</span><a class="link" href="https://www.cna.com.tw/news/ahel/202504020390.aspx" target="_blank" rel="noopener">原文 ↗</a></div>'
+
+  eva: {
+    title: '長榮航空地勤招募條件',
+    question: '長榮航空地勤招募釋出多少職缺？起薪與報名期限？',
+    answer: '長榮航空第二梯地勤招募釋出近百名職缺，涵蓋客服、財務、資訊安全、航機工程等職類；大學畢業者起薪為 4.3 萬元，報名至 4 月 13 日止，預計 7 至 8 月分批報到[1]。',
+    status: '已溯源 2/2 句',
+    sources: [
+      { n: 1, kind: '公媒知識庫', title: '長榮航空招募近百名地勤 起薪 4.3 萬元', media: '中央社', date: '2025-04-02', url: 'https://www.cna.com.tw/news/ahel/202504020390.aspx' }
+    ],
+    voices: [
+      { who: '長榮航空（招募端）', clue: '「近百名職缺、跨職類輪調」', infer: '希望吸引應屆畢業生，強化雇主品牌', emotion: '積極、期待' },
+      { who: '應屆畢業生／求職者', clue: '「起薪 4.3 萬元」是明確條件', infer: '仍關心輪班、工時、升遷與實際工作內容', emotion: '審慎、比較' },
+      { who: '人力市場觀察者', clue: '航空業擴張期的集中徵才訊號', infer: '關注缺工是否為結構性問題', emotion: '中性、分析' }
+    ],
+    absent: { who: '現職地勤員工、企業工會', note: '報導以公司新聞稿為主，未見勞方對工作條件的說法。' },
+    acot: [
+      { key: 'eva-src', kind: '查來源', q: '報導資訊主要來自公司新聞稿，是否有現職員工或勞方觀點？' },
+      { key: 'eva-fact', kind: '查事實', q: '4.3 萬元起薪包含哪些固定薪資與津貼？不同職類是否相同？' },
+      { key: 'eva-angle', kind: '查角度', q: '報導強調職缺與薪資，是否忽略工時、輪班和留任情況？' }
+    ],
+    timeline: [
+      { time: '2025.04.02', title: '公布第二梯招募', note: '釋出近百名地勤職缺。', url: 'https://www.cna.com.tw/news/ahel/202504020390.aspx', source: '中央社 · 2025-04-02', now: true },
+      { time: '2025.04.13', title: '報名截止', note: '應徵者需在期限前完成線上報名。', source: '尚無對應報導' },
+      { time: '2025.07-08', title: '預計分批報到', note: '依專業背景分派工作地點與職類。', source: '尚無對應報導' }
+    ]
   },
-  hsr:{
-    title:'高鐵與一日生活圈',
-    question:'高鐵對民眾生活型態帶來哪些影響？',
-    answer:'公媒報導將高鐵的影響歸納為「一日生活圈」：城際旅行時間縮短，商務、返鄉與休閒移動更頻繁，也重新分配航空、客運與台鐵的運量<sup>[1]</sup>。影響並不只在交通效率，也延伸到工作地點選擇、城市交流與區域發展<sup>[1]</sup>。',
-    sources:'<div class="src-row" id="src-1"><span class="lbl source">公媒知識庫</span><span class="t">[1] 建構一日生活圈 高鐵改寫交通史</span><span class="meta">公視新聞網 · 2011-08-02</span><a class="link" href="https://news.pts.org.tw/article/66094" target="_blank" rel="noopener">原文 ↗</a></div>'
+
+  hsr: {
+    title: '高鐵與一日生活圈',
+    question: '高鐵對民眾生活型態帶來哪些影響？',
+    answer: '公媒報導將高鐵的影響歸納為「一日生活圈」：城際旅行時間縮短，商務、返鄉與休閒移動更頻繁，也重新分配航空、客運與台鐵的運量[1]。影響並不只在交通效率，也延伸到工作地點選擇、城市交流與區域發展[1]。',
+    status: '已溯源 2/2 句',
+    sources: [
+      { n: 1, kind: '公媒知識庫', title: '建構一日生活圈 高鐵改寫交通史', media: '公視新聞網', date: '2011-08-02', url: 'https://news.pts.org.tw/article/66094' }
+    ],
+    voices: [
+      { who: '跨城通勤與商務旅客', clue: '「一日生活圈」降低城際移動時間成本', infer: '工作與居住地不再必須位於同一城市', emotion: '便利、依賴' },
+      { who: '站區居民與地方發展者', clue: '高鐵帶動站區開發，也讓資源更集中', infer: '關注房價、接駁與周邊生活品質', emotion: '期待、保留' },
+      { who: '運輸同業（航空／客運／台鐵）', clue: '運量被重新分配', infer: '需調整路線與定價策略', emotion: '壓力、調整' }
+    ],
+    absent: { who: '非高鐵沿線地區居民', note: '東部與離島居民的移動經驗未納入本篇討論。' },
+    acot: [
+      { key: 'hsr-src', kind: '查來源', q: '報導引用哪些旅客與運輸業者？是否包含非高鐵沿線居民？' },
+      { key: 'hsr-fact', kind: '查事實', q: '高鐵通車後，航空、客運與台鐵運量實際如何變化？' },
+      { key: 'hsr-angle', kind: '查角度', q: '「一日生活圈」是否偏重效率，忽略票價與區域落差？' }
+    ],
+    timeline: [
+      { time: '2007.01', title: '台灣高鐵通車', note: '西部主要城市進入高速鐵路運輸時代。', source: '尚無對應報導' },
+      { time: '2011.08', title: '形成一日生活圈', note: '月搭乘人次由 72 萬成長至逾 200 萬。', url: 'https://news.pts.org.tw/article/66094', source: '公視新聞網 · 2011-08-02', now: true },
+      { time: '持續發展', title: '站區與接駁擴張', note: '交通便利延伸到居住、工作與區域發展。', source: '尚無對應報導' }
+    ]
   },
-  kao:{
-    title:'助理費案件程序時間線',
-    question:'高金素梅涉詐領助理費案的發展時間線',
-    answer:'案件關鍵節點包括：2 月 10 日檢調搜索並約談相關人士；2 月 13 日再次應訊後以 100 萬元交保。助理張俊傑則因涉多項罪名且有逃亡、串證之虞，遭法院裁定羈押禁見<sup>[1]</sup>。上述均屬偵查階段程序處分，尚未進入審判認定<sup>[1]</sup>。',
-    sources:'<div class="src-row" id="src-1"><span class="lbl source">公媒知識庫</span><span class="t">[1] 高金素梅涉詐領助理費等案 100 萬元交保</span><span class="meta">中央社 · 2026-02-13</span><a class="link" href="https://www.cna.com.tw/news/asoc/202602130246.aspx" target="_blank" rel="noopener">原文 ↗</a></div>'
+
+  kao: {
+    title: '助理費案件程序時間線',
+    question: '高金素梅涉詐領助理費案的發展時間線',
+    answer: '案件關鍵節點包括：2 月 10 日檢調搜索並約談相關人士；2 月 13 日再次應訊後以 100 萬元交保。助理張俊傑則因涉多項罪名且有逃亡、串證之虞，遭法院裁定羈押禁見[1]。上述均屬偵查階段程序處分，尚未進入審判認定[1]。',
+    status: '已溯源 3/3 句',
+    sources: [
+      { n: 1, kind: '公媒知識庫', title: '高金素梅涉詐領助理費等案 100 萬元交保', media: '中央社', date: '2026-02-13', url: 'https://www.cna.com.tw/news/asoc/202602130246.aspx' }
+    ],
+    voices: [
+      { who: '檢調與司法程序', clue: '搜索、約談與交保是偵查程序的公開節點', infer: '重點在證據保全與後續起訴判斷', emotion: '審慎、程序導向' },
+      { who: '當事人與支持者', clue: '當事人主張案件具有政治目的', infer: '希望報導區分司法事實與當事人說法', emotion: '質疑、關切' },
+      { who: '選區選民與監督團體', clue: '公費助理制度的使用方式受到檢視', infer: '關注制度面是否需要改革', emotion: '關注、要求說明' }
+    ],
+    absent: { who: '其他被告與助理方說法', note: '羈押中的當事人未能受訪，其陳述僅見於裁定書轉述。' },
+    acot: [
+      { key: 'kao-src', kind: '查來源', q: '報導引用檢方、法院與當事人哪些說法？三者資訊是否清楚區分？' },
+      { key: 'kao-fact', kind: '查事實', q: '搜索、交保與羈押各代表什麼法律程序，是否等同有罪？' },
+      { key: 'kao-angle', kind: '查角度', q: '報導是否把偵查進度寫成定罪結果，或忽略無罪推定？' }
+    ],
+    timeline: [
+      { time: '2026.02.10', title: '檢調搜索與約談', note: '北檢指揮調查局搜索並通知相關人士到案。', source: '尚無對應報導' },
+      { time: '2026.02.11', title: '部分被告聲押', note: '助理張俊傑遭法院裁定羈押禁見。', source: '尚無對應報導' },
+      { time: '2026.02.13', title: '高金素梅交保', note: '再次應訊後以 100 萬元交保。', url: 'https://www.cna.com.tw/news/asoc/202602130246.aspx', source: '中央社 · 2026-02-13', now: true }
+    ]
+  },
+
+  acotAnswers: {
+    'src': '報導主要採用立法院與環境部說法，並交代修法條文內容；沒有清運業者、土地所有人或受處分者的直接回應。若要完整呈現執行面，建議補訪這三類利害關係人，確認落地成本與責任歸屬[1]。',
+    'fact': '可由三讀條文確認：非法棄置事業廢棄物刑期上限提高至 7 年，並導入電子圍籬等科技執法工具[2]。至於「案件年增三成」與追繳率，尚未在本次來源中找到原始統計，發稿前應另取官方資料佐證。',
+    'angle': '目前框架把問題集中在「提高刑責能否嚇阻」。另一個值得追問的角度是：合法處理量能、清運價格與跨縣市流向管理，是否才是非法棄置反覆發生的條件[1]。',
+    'eva-src': '主要資訊來自長榮航空新聞稿，適合確認職缺數、起薪與報名日期；若要呈現工作條件，仍需加入現職員工、工會或勞動主管機關的資訊[1]。',
+    'eva-fact': '可確認近百名職缺、4.3 萬元起薪及 4 月 13 日截止[1]。薪資組成、各職類輪班制度與實際報到人數，報導未提供。',
+    'eva-angle': '報導採企業招募框架，強調機會與職涯發展。可再從航空業缺工、輪班負荷及人才留任率切入，補上另一面的事實。',
+    'hsr-src': '報導以商務旅客與運輸數據呈現高鐵效應[1]。若討論生活型態，還應加入通勤者、站區居民與非沿線地區的經驗。',
+    'hsr-fact': '通車初期月搭乘人次由 72 萬增至逾 200 萬，國內航空與客運運量受到衝擊[1]；長期區域發展效果需用後續統計另行驗證。',
+    'hsr-angle': '「一日生活圈」強調速度與便利，也可追問票價負擔、接駁落差與站區房價，是否讓不同群體承受不同影響。',
+    'kao-src': '報導同時包含檢方處分、法院裁定與當事人回應[1]。閱讀時應把三種來源分開，避免將任何單一說法視為已確認事實。',
+    'kao-fact': '交保與羈押都是偵查階段的程序處分，不等於法院已判決有罪[1]。案件結論仍須看後續起訴與審判結果。',
+    'kao-angle': '若只排列搜索、聲押與交保，容易形成有罪暗示。報導需同步提醒無罪推定，並清楚區分司法文件與政治回應。'
   }
 };
+/* ===================== END MOCK DATA ===================== */
 
-const PANEL_DATA={
-  waste:{
-    pola:[
-      ['環境部／地方環保局','「刑責上限提高至 7 年、導入電子圍籬」','以重罰與科技執法宣示治理決心','積極、展現作為'],
-      ['鄰近棄置場的居民','「案件持續攀升」——身邊農地可能是下一個熱點','擔心罰則再高，既有污染仍無人清理','焦慮、不信任'],
-      ['環保團體','土地所有人責任未納入本次條文','肯定方向，但認為仍留有執行破口','支持但保留']
-    ],
-    absent:{who:'清運業者、再利用處理機構',note:'本篇報導未收錄其回應；處理量能與清運成本的說法缺席。'},
-    acot:[
-      ['src','查來源','這篇報導引用了哪些單位的說法？有沒有清運業者或受罰者的回應？'],
-      ['fact','查事實','修法提高了哪些刑責？執法工具與清除責任具體如何改變？'],
-      ['angle','查角度','報導聚焦「亂象與重罰」，是否忽略合法處理量能不足的結構問題？']
-    ],
-    time:[
-      ['2024.11','非法棄置案件突破千件','案件量成為推動修法的重要背景。','','尚無對應報導'],
-      ['2025.06','「有『廢』難清」專題報導','公視深度追蹤廢棄物處理鏈與管理破口。','https://news.pts.org.tw/article/755076','公視新聞網 · 2025-06-08'],
-      ['2026.06','修正案完成三讀','提高非法棄置刑責，並導入科技執法。','https://news.pts.org.tw/article/813233','公視新聞網 · 2026-06-16'],
-      ['後續','子法與執行規範待公布','地方執法資源與業者責任仍需持續追蹤。','','尚無對應報導']
-    ]
-  },
-  eva:{
-    pola:[
-      ['長榮航空（招募端）','「近百名職缺、跨職類輪調」','希望吸引應屆畢業生，強化雇主品牌','積極、期待'],
-      ['應屆畢業生／求職者','「起薪 4.3 萬元」是明確條件','仍關心輪班、工時、升遷與實際工作內容','審慎、比較'],
-      ['人力市場觀察者','航空業擴張期的集中徵才訊號','關注缺工是否為結構性問題','中性、分析']
-    ],
-    absent:{who:'現職地勤員工、企業工會',note:'報導以公司新聞稿為主，未見勞方對工作條件的說法。'},
-    acot:[
-      ['eva-src','查來源','報導資訊主要來自公司新聞稿，是否有現職員工或勞方觀點？'],
-      ['eva-fact','查事實','4.3 萬元起薪包含哪些固定薪資與津貼？不同職類是否相同？'],
-      ['eva-angle','查角度','報導強調職缺與薪資，是否忽略工時、輪班和留任情況？']
-    ],
-    time:[
-      ['2025.04.02','公布第二梯招募','釋出近百名地勤職缺。','https://www.cna.com.tw/news/ahel/202504020390.aspx','中央社 · 2025-04-02'],
-      ['2025.04.13','報名截止','應徵者需在期限前完成線上報名。','','尚無對應報導'],
-      ['2025.07-08','預計分批報到','依專業背景分派工作地點與職類。','','尚無對應報導']
-    ]
-  },
-  hsr:{
-    pola:[
-      ['跨城通勤與商務旅客','「一日生活圈」降低城際移動時間成本','工作與居住地不再必須位於同一城市','便利、依賴'],
-      ['站區居民與地方發展者','高鐵帶動站區開發，也讓資源更集中','關注房價、接駁與周邊生活品質','期待、保留'],
-      ['運輸同業（航空／客運／台鐵）','運量被重新分配','需調整路線與定價策略','壓力、調整']
-    ],
-    absent:{who:'非高鐵沿線地區居民',note:'東部與離島居民的移動經驗未納入本篇討論。'},
-    acot:[
-      ['hsr-src','查來源','報導引用哪些旅客與運輸業者？是否包含非高鐵沿線居民？'],
-      ['hsr-fact','查事實','高鐵通車後，航空、客運與台鐵運量實際如何變化？'],
-      ['hsr-angle','查角度','「一日生活圈」是否偏重效率，忽略票價與區域落差？']
-    ],
-    time:[
-      ['2007.01','台灣高鐵通車','西部主要城市進入高速鐵路運輸時代。','','尚無對應報導'],
-      ['2011.08','形成一日生活圈','月搭乘人次由 72 萬成長至逾 200 萬。','https://news.pts.org.tw/article/66094','公視新聞網 · 2011-08-02'],
-      ['持續發展','站區與接駁擴張','交通便利延伸到居住、工作與區域發展。','','尚無對應報導']
-    ]
-  },
-  kao:{
-    pola:[
-      ['檢調與司法程序','搜索、約談與交保是偵查程序的公開節點','重點在證據保全與後續起訴判斷','審慎、程序導向'],
-      ['當事人與支持者','當事人主張案件具有政治目的','希望報導區分司法事實與當事人說法','質疑、關切'],
-      ['選區選民與監督團體','公費助理制度的使用方式受到檢視','關注制度面是否需要改革','關注、要求說明']
-    ],
-    absent:{who:'其他被告與助理方說法',note:'羈押中的當事人未能受訪，其陳述僅見於裁定書轉述。'},
-    acot:[
-      ['kao-src','查來源','報導引用檢方、法院與當事人哪些說法？三者資訊是否清楚區分？'],
-      ['kao-fact','查事實','搜索、交保與羈押各代表什麼法律程序，是否等同有罪？'],
-      ['kao-angle','查角度','報導是否把偵查進度寫成定罪結果，或忽略無罪推定？']
-    ],
-    time:[
-      ['2026.02.10','檢調搜索與約談','北檢指揮調查局搜索並通知相關人士到案。','','尚無對應報導'],
-      ['2026.02.11','部分被告聲押','助理張俊傑遭法院裁定羈押禁見。','','尚無對應報導'],
-      ['2026.02.13','高金素梅交保','再次應訊後以 100 萬元交保。','https://www.cna.com.tw/news/asoc/202602130246.aspx','中央社 · 2026-02-13']
-    ]
-  }
-};
-
-const ACOT_ANSWERS={
-  src:'報導主要採用立法院與環境部說法，並交代修法條文內容；沒有清運業者、土地所有人或受處分者的直接回應。若要完整呈現執行面，建議補訪這三類利害關係人，確認落地成本與責任歸屬<sup>[1]</sup>。',
-  fact:'可由三讀條文確認：非法棄置事業廢棄物刑期上限提高至 7 年，並導入電子圍籬等科技執法工具<sup>[2]</sup>。至於「案件年增三成」與追繳率，尚未在本次來源中找到原始統計，發稿前應另取官方資料佐證。',
-  angle:'目前框架把問題集中在「提高刑責能否嚇阻」。另一個值得追問的角度是：合法處理量能、清運價格與跨縣市流向管理，是否才是非法棄置反覆發生的條件<sup>[1]</sup>。',
-  'eva-src':'主要資訊來自長榮航空新聞稿，適合確認職缺數、起薪與報名日期；若要呈現工作條件，仍需加入現職員工、工會或勞動主管機關的資訊<sup>[1]</sup>。',
-  'eva-fact':'可確認近百名職缺、4.3 萬元起薪及 4 月 13 日截止<sup>[1]</sup>。薪資組成、各職類輪班制度與實際報到人數，報導未提供。',
-  'eva-angle':'報導採企業招募框架，強調機會與職涯發展。可再從航空業缺工、輪班負荷及人才留任率切入，補上另一面的事實。',
-  'hsr-src':'報導以商務旅客與運輸數據呈現高鐵效應<sup>[1]</sup>。若討論生活型態，還應加入通勤者、站區居民與非沿線地區的經驗。',
-  'hsr-fact':'通車初期月搭乘人次由 72 萬增至逾 200 萬，國內航空與客運運量受到衝擊<sup>[1]</sup>；長期區域發展效果需用後續統計另行驗證。',
-  'hsr-angle':'「一日生活圈」強調速度與便利，也可追問票價負擔、接駁落差與站區房價，是否讓不同群體承受不同影響。',
-  'kao-src':'報導同時包含檢方處分、法院裁定與當事人回應<sup>[1]</sup>。閱讀時應把三種來源分開，避免將任何單一說法視為已確認事實。',
-  'kao-fact':'交保與羈押都是偵查階段的程序處分，不等於法院已判決有罪<sup>[1]</sup>。案件結論仍須看後續起訴與審判結果。',
-  'kao-angle':'若只排列搜索、聲押與交保，容易形成有罪暗示。報導需同步提醒無罪推定，並清楚區分司法文件與政治回應。'
-};
-
-/* ---------- 導覽 ---------- */
-function goto(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('scr-'+n).classList.add('active');
-  window.scrollTo(0,0);
-  if(String(n)==='2')revealSuggestions();
+/* =====================================================================
+   API 介面層 — 渲染只認這一層的回傳，不直接讀 MOCK
+   ===================================================================== */
+function pickMockKey(q) {
+  if (q.includes('長榮')) return 'eva';
+  if (q.includes('高鐵')) return 'hsr';
+  if (q.includes('高金素梅') || q.includes('助理費')) return 'kao';
+  return 'waste';
 }
-document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>goto(el.dataset.goto)));
 
-/* ---------- 首頁輸入框：直接開始 ---------- */
-function homeSubmit(){
-  const inp=document.getElementById('home-ask');
-  const q=inp.value.trim();
-  if(!q){inp.focus();inp.placeholder='請先輸入想查的事件或問題';return}
+function mockAsk(question) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      const d = MOCK[pickMockKey(question)];
+      resolve(Object.assign({}, d, { question: question || d.question }));
+    }, TIMING.think);
+  });
+}
+
+/* 依 RAG 實際回傳格式調整這裡；產出的形狀要與 MOCK 的單筆對話一致 */
+function normalize(raw) {
+  return {
+    title: raw.title || (raw.query || '').slice(0, 18),
+    question: raw.query || '',
+    answer: raw.answer || '',
+    status: raw.grounded ? ('已溯源 ' + raw.grounded) : '',
+    sources: (raw.sources || []).map((s, i) => ({
+      n: s.index || i + 1,
+      kind: s.in_corpus === false ? '庫外知識' : '公媒知識庫',
+      title: s.title || '',
+      media: s.source || '',
+      date: s.published_date || '',
+      url: s.url || ''
+    })),
+    voices: raw.pola || [],
+    absent: raw.absent || null,
+    acot: raw.acot || [],
+    timeline: raw.timeline || []
+  };
+}
+
+async function httpAsk(question) {
+  const res = await fetch(API_BASE + '/query', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query: question })
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return normalize(await res.json());
+}
+
+const api = {
+  ask(question) { return USE_MOCK ? mockAsk(question) : httpAsk(question); },
+  conversation(key) {
+    if (USE_MOCK) return Promise.resolve(MOCK[key] || MOCK.waste);
+    return httpAsk((MOCK[key] || MOCK.waste).question);
+  },
+  acotAnswer(key) {
+    if (USE_MOCK) return Promise.resolve(MOCK.acotAnswers[key] || '');
+    return httpAsk(key).then(r => r.answer);
+  }
+};
+
+/* =====================================================================
+   DOM 建構工具 — 一律以 textContent 帶入資料，不用 innerHTML 拼字串
+   ===================================================================== */
+function el(tag, props, ...kids) {
+  const n = document.createElement(tag);
+  if (props) for (const k in props) {
+    const v = props[k];
+    if (v == null) continue;
+    if (k === 'class') n.className = v;
+    else if (k === 'text') n.textContent = v;
+    else n.setAttribute(k, v);
+  }
+  kids.flat().forEach(c => {
+    if (c == null) return;
+    n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  });
+  return n;
+}
+function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+/* 把回答字串中的 [1][2] 轉成可點的腳註連結，其餘一律純文字 */
+function answerNodes(text) {
+  const frag = document.createDocumentFragment();
+  String(text).split(/(\[\d+\](?:\[\d+\])*)/).forEach(part => {
+    if (!part) return;
+    if (/^\[\d+\]/.test(part)) {
+      (part.match(/\[\d+\]/g) || []).forEach(m => {
+        const n = m.replace(/\D/g, '');
+        frag.appendChild(el('sup', null,
+          el('a', { class: 'fn', href: '#src-' + n, 'aria-label': '出處 ' + n }, m)));
+      });
+    } else {
+      frag.appendChild(document.createTextNode(part));
+    }
+  });
+  return frag;
+}
+
+/* =====================================================================
+   畫面切換
+   ===================================================================== */
+function goto(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const scr = document.getElementById('scr-' + n);
+  scr.classList.add('active');
+  window.scrollTo(0, 0);
+  const h1 = scr.querySelector('h1');
+  if (h1) h1.focus({ preventScroll: true });
+  if (String(n) === '2') revealSuggestions();
+}
+document.querySelectorAll('[data-goto]').forEach(elm =>
+  elm.addEventListener('click', () => goto(elm.dataset.goto)));
+
+/* =====================================================================
+   首頁輸入框
+   ===================================================================== */
+function homeSubmit() {
+  const inp = document.getElementById('home-ask');
+  const q = inp.value.trim();
+  if (!q) { inp.focus(); inp.placeholder = '請先輸入想查的事件或問題'; return; }
   goto(1);
-  inp.value='';
+  inp.value = '';
   startNewQA(q);
 }
-document.getElementById('home-go').addEventListener('click',homeSubmit);
-document.getElementById('home-ask').addEventListener('keydown',e=>{if(e.key==='Enter')homeSubmit()});
-document.querySelectorAll('.ask-chip').forEach(b=>b.addEventListener('click',()=>{
-  document.getElementById('home-ask').value=b.textContent;
-  homeSubmit();
-}));
+document.getElementById('home-go').addEventListener('click', homeSubmit);
+document.getElementById('home-ask').addEventListener('keydown', e => { if (e.key === 'Enter') homeSubmit(); });
+document.querySelectorAll('#scr-0 .ask-chip').forEach(b =>
+  b.addEventListener('click', () => {
+    document.getElementById('home-ask').value = b.textContent;
+    homeSubmit();
+  }));
 
-/* ---------- 歷史對話 ---------- */
-const histBtn=document.getElementById('hist-btn'),histMenu=document.getElementById('hist-menu');
-histBtn.addEventListener('click',e=>{
+/* =====================================================================
+   歷史對話
+   ===================================================================== */
+const histBtn = document.getElementById('hist-btn');
+const histMenu = document.getElementById('hist-menu');
+function closeHist() {
+  histMenu.classList.remove('open');
+  histBtn.setAttribute('aria-expanded', 'false');
+}
+histBtn.addEventListener('click', e => {
   e.stopPropagation();
-  const open=histMenu.classList.toggle('open');
-  histBtn.setAttribute('aria-expanded',open);
+  const open = histMenu.classList.toggle('open');
+  histBtn.setAttribute('aria-expanded', String(open));
 });
-document.addEventListener('click',e=>{
-  if(!histMenu.contains(e.target)&&e.target!==histBtn){histMenu.classList.remove('open');histBtn.setAttribute('aria-expanded','false')}
+document.addEventListener('click', e => {
+  if (!histMenu.contains(e.target) && e.target !== histBtn) closeHist();
 });
-document.querySelectorAll('[data-hist]').forEach(el=>{
-  el.addEventListener('click',()=>{
-    const key=el.dataset.hist;
-    if(el.closest('#scr-0'))goto(1);
-    histMenu.classList.remove('open');histBtn.setAttribute('aria-expanded','false');
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && histMenu.classList.contains('open')) { closeHist(); histBtn.focus(); }
+});
+document.querySelectorAll('[data-hist]').forEach(elm => {
+  elm.addEventListener('click', () => {
+    const key = elm.dataset.hist;
+    if (elm.closest('#scr-0')) goto(1);
+    closeHist();
     loadConversation(key);
   });
 });
-function loadConversation(key){
-  const c=CONVERSATIONS[key]||CONVERSATIONS.waste;
-  newQMode=false;
-  const di=document.getElementById('dock-in');di.value='';di.placeholder='追問這則新聞⋯';
-  document.getElementById('conv-title').textContent=c.title;
-  document.querySelectorAll('.hist-item').forEach(i=>i.classList.toggle('current',i.dataset.hist===key));
-  document.getElementById('qa-stream').innerHTML=
-    '<div class="sec-lbl" style="margin-top:18px">你的提問</div><p class="q-text">'+c.question+'</p>'+
-    '<div class="sec-lbl">NEWSLLM 的回答</div><p class="a-text">'+c.answer+'</p>'+
-    '<div class="sec-lbl">出處</div>'+c.sources;
-  renderPanels(key);
-  bindLocate();
+
+/* =====================================================================
+   渲染：對話串
+   ===================================================================== */
+const stream = () => document.getElementById('qa-stream');
+
+function secLabel(text, first) {
+  return el('div', { class: 'sec-lbl', style: first ? 'margin-top:18px' : null }, text);
 }
 
-/* ---------- 右欄三面板 ---------- */
-const PANEL_NOTES={
-  pola:'POLA 多視角模組 — 並列呈現不同利害關係人，無優先順序',
-  acot:'ACOT 追問模組 — 點「送入提問框」把問題交給 NewsLLM 回答',
-  time:'事件脈絡 — 每個節點可連回對應報導查證'
+function sourceRow(s) {
+  return el('div', { class: 'src-row', id: 'src-' + s.n },
+    el('span', { class: 'lbl source' }, s.kind),
+    el('span', { class: 't' }, '[' + s.n + '] ' + s.title),
+    el('span', { class: 'meta' }, s.media + (s.date ? ' · ' + s.date : '')),
+    s.url ? el('a', { class: 'link', href: s.url, target: '_blank', rel: 'noopener' }, '原文 ↗') : null
+  );
+}
+
+function renderConversation(d) {
+  const s = stream();
+  clear(s);
+  s.appendChild(secLabel(COPY.qLabel, true));
+  s.appendChild(el('p', { class: 'q-text' }, d.question));
+  s.appendChild(secLabel(COPY.aLabel));
+  s.appendChild(el('p', { class: 'a-text' }, answerNodes(d.answer)));
+  if (d.sources && d.sources.length) {
+    s.appendChild(secLabel(COPY.srcLabel));
+    d.sources.forEach(src => s.appendChild(sourceRow(src)));
+  }
+  s.appendChild(briefCTA());
+  const st = document.getElementById('ask-status');
+  if (st && d.status) st.textContent = d.status;
+}
+
+function appendFollowUp(question, answerText) {
+  const box = el('div');
+  box.appendChild(secLabel(COPY.followLabel));
+  box.appendChild(el('p', { class: 'q-text', style: 'font-size:16px' }, question));
+  box.appendChild(secLabel(COPY.aLabel));
+  box.appendChild(el('p', { class: 'a-text' }, answerNodes(answerText)));
+  box.style.animation = 'fadeUp .5s var(--ease)';
+  stream().appendChild(box);
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* 載入 / 空 / 錯誤三種狀態 */
+function renderState(kind, retryFn) {
+  const s = stream();
+  const box = el('div', { class: 'state' + (kind === 'error' ? ' err' : '') });
+  box.appendChild(el('b', null, kind === 'error' ? COPY.errT : COPY.emptyT));
+  box.appendChild(el('p', null, kind === 'error' ? COPY.errB : COPY.emptyB));
+  if (retryFn) {
+    const btn = el('button', { class: 'btn sm', type: 'button' }, COPY.retry);
+    btn.addEventListener('click', retryFn);
+    box.appendChild(el('div', { class: 'acts' }, btn));
+  }
+  s.appendChild(box);
+}
+
+/* =====================================================================
+   渲染：右欄三面板
+   ===================================================================== */
+const PANEL_NOTES = {
+  pola: 'POLA 多視角模組 — 並列呈現不同利害關係人，無優先順序',
+  acot: 'ACOT 追問模組 — 點「送入提問框」把問題交給 NewsLLM 回答',
+  time: '事件脈絡 — 每個節點可連回對應報導查證'
 };
-document.querySelectorAll('#m1-tabs button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('#m1-tabs button').forEach(x=>x.classList.remove('active'));
+
+function voiceCard(v) {
+  return el('div', { class: 'voice' },
+    el('div', { class: 'voice-head' }, el('span', { class: 'who' }, v.who)),
+    el('div', { class: 'voice-row' }, el('b', null, '線索'), el('span', null, v.clue)),
+    el('div', { class: 'voice-row' }, el('b', null, '推論'), el('span', null, v.infer)),
+    el('div', { class: 'voice-row' }, el('b', null, '情緒'), el('span', null, v.emotion))
+  );
+}
+
+function absentCard(a) {
+  const btn = el('button', { class: 'act', type: 'button', style: 'color:var(--primary)' }, '從資料庫尋找');
+  btn.addEventListener('click', () => {
+    btn.textContent = '檢索中⋯';
+    btn.classList.add('done');
+    setTimeout(() => {
+      btn.replaceWith(el('p', { class: 'miss', style: 'color:var(--primary)' },
+        '原型示意：實際串接後，這裡會列出這些聲音的相關報導。'));
+    }, 700);
+  });
+  return el('div', { class: 'voice absent' },
+    el('div', { class: 'voice-head' },
+      el('span', { class: 'who' }, a.who),
+      el('span', { class: 'tag-absent' }, '缺席')),
+    el('p', { class: 'miss' }, a.note),
+    el('div', { class: 'voice-foot' }, btn)
+  );
+}
+
+function renderPanels(d) {
+  const pola = document.getElementById('pola-content');
+  clear(pola);
+  const grid = el('div', { class: 'pola-grid' });
+  (d.voices || []).forEach(v => grid.appendChild(voiceCard(v)));
+  if (d.absent) grid.appendChild(absentCard(d.absent));
+  pola.appendChild(grid);
+
+  const acot = document.getElementById('acot-content');
+  clear(acot);
+  const list = el('div', { class: 'acot-list' });
+  (d.acot || []).forEach(x => {
+    const go = el('button', {
+      class: 'act acot-run', type: 'button',
+      'data-a': x.key, 'data-q': x.q, style: 'color:var(--primary)'
+    }, '送入提問框');
+    list.appendChild(el('div', { class: 'acot-item' },
+      el('div', { class: 'acot-head' }, el('span', { class: 'lbl' }, x.kind), go),
+      el('p', { class: 'acot-q' }, x.q)));
+  });
+  acot.appendChild(list);
+
+  const time = document.getElementById('time-content');
+  clear(time);
+  const tl = d.timeline || [];
+  time.appendChild(el('div', { class: 'timeline-head' },
+    el('h3', null, '事件脈絡'),
+    el('span', null, tl.length + ' 個關鍵節點')));
+  const ul = el('ul', { class: 'tl' });
+  tl.forEach(x => {
+    const src = x.url
+      ? el('a', { class: 'event-src', href: x.url, target: '_blank', rel: 'noopener' }, x.source + ' ↗')
+      : el('span', { class: 'event-src none' }, x.source);
+    ul.appendChild(el('li', { class: x.now ? 'now' : null },
+      el('time', null, x.time),
+      el('div', null,
+        el('span', { class: 'event-title' }, x.title, x.now ? el('span', { class: 'now-tag' }, '本篇') : null),
+        el('span', { class: 'event-note' }, x.note),
+        src)));
+  });
+  time.appendChild(ul);
+}
+
+/* 分頁切換 */
+document.querySelectorAll('#m1-tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#m1-tabs button').forEach(x => {
+      x.classList.remove('active');
+      x.setAttribute('aria-selected', 'false');
+    });
     b.classList.add('active');
-    document.querySelectorAll('#scr-1 .pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===b.dataset.panel));
-    document.getElementById('panel-note').textContent=PANEL_NOTES[b.dataset.panel];
+    b.setAttribute('aria-selected', 'true');
+    document.querySelectorAll('#scr-1 .pane').forEach(p =>
+      p.classList.toggle('active', p.dataset.pane === b.dataset.panel));
+    document.getElementById('panel-note').textContent = PANEL_NOTES[b.dataset.panel];
   });
 });
-function renderPanels(key){
-  const data=PANEL_DATA[key]||PANEL_DATA.waste;
-  const cells=data.pola.map(x=>
-    '<div class="voice"><div class="voice-head"><span class="who">'+x[0]+'</span></div>'+
-    '<div class="voice-row"><b>線索</b><span>'+x[1]+'</span></div>'+
-    '<div class="voice-row"><b>推論</b><span>'+x[2]+'</span></div>'+
-    '<div class="voice-row"><b>情緒</b><span>'+x[3]+'</span></div></div>');
-  cells.push(
-    '<div class="voice absent"><div class="voice-head"><span class="who">'+data.absent.who+'</span><span class="tag-absent">缺席</span></div>'+
-    '<p class="miss">'+data.absent.note+'</p>'+
-    '<div class="voice-foot"><button class="act" style="color:var(--primary)" onclick="alert(\'原型示意：將於資料庫檢索這些聲音的相關報導\')">從資料庫尋找</button></div></div>');
-  document.getElementById('pola-content').innerHTML='<div class="pola-grid">'+cells.join('')+'</div>';
 
-  document.getElementById('acot-content').innerHTML='<div class="acot-list">'+data.acot.map(x=>
-    '<div class="acot-item"><div class="acot-head">'+
-    '<span class="lbl">'+x[1]+'</span>'+
-    '<button class="act acot-run" data-a="'+x[0]+'" data-q="'+x[2].replace(/"/g,'&quot;')+'" style="color:var(--primary)">送入提問框</button></div>'+
-    '<p class="acot-q">'+x[2]+'</p></div>').join('')+'</div>';
+/* =====================================================================
+   提問流程
+   ===================================================================== */
+let pendingAcot = null, newQMode = false, lastQuestion = '', currentConversation = null;
 
-  document.getElementById('time-content').innerHTML=
-    '<div class="timeline-head"><h3>事件脈絡</h3><span>'+data.time.length+' 個關鍵節點</span></div><ul class="tl">'+
-    data.time.map((x,i)=>{
-      const isNow=i===data.time.length-2||data.time.length<3&&i===data.time.length-1;
-      const src=x[3]
-        ? '<a class="event-src" href="'+x[3]+'" target="_blank" rel="noopener">'+x[4]+' ↗</a>'
-        : '<span class="event-src none">'+x[4]+'</span>';
-      return '<li class="'+(isNow?'now':'')+'"><time>'+x[0]+'</time><div>'+
-        '<span class="event-title">'+x[1]+(isNow?'<span class="now-tag">本篇</span>':'')+'</span>'+
-        '<span class="event-note">'+x[2]+'</span>'+src+'</div></li>';
-    }).join('')+'</ul>';
+function setDock(placeholder) {
+  const inp = document.getElementById('dock-in');
+  inp.value = '';
+  inp.placeholder = placeholder;
 }
 
-/* ---------- 提問 / 追問 ---------- */
-let pendingAcot=null, newQMode=false;
-function bindLocate(){
-  document.querySelectorAll('.locate').forEach(btn=>{
-    btn.onclick=()=>{
-      document.querySelectorAll('.src-row').forEach(s=>s.classList.remove('flash'));
-      const t=document.getElementById(btn.dataset.src);
-      if(t){t.classList.add('flash');t.scrollIntoView({behavior:'smooth',block:'center'});
-        setTimeout(()=>t.classList.remove('flash'),2200);}
-    };
+function loadConversation(key) {
+  newQMode = false;
+  setDock(COPY.askPh);
+  document.querySelectorAll('.hist-item').forEach(i =>
+    i.classList.toggle('current', i.dataset.hist === key));
+  const think = document.getElementById('think');
+  think.classList.add('on');
+  api.conversation(key).then(d => {
+    think.classList.remove('on');
+    currentConversation = d;
+    document.getElementById('conv-title').textContent = d.title;
+    renderConversation(d);
+    renderPanels(d);
+  }).catch(() => {
+    think.classList.remove('on');
+    clear(stream());
+    renderState('error', () => loadConversation(key));
   });
 }
-function appendQA(qText,answerHtml){
-  const d=document.createElement('div');
-  d.innerHTML='<div class="sec-lbl">你的追問</div><p class="q-text" style="font-size:16px">'+qText+'</p>'+
-    '<div class="sec-lbl">NEWSLLM 的回答</div><p class="a-text">'+answerHtml+'</p>';
-  d.style.animation='fadeUp .5s var(--ease)';
-  document.getElementById('qa-stream').appendChild(d);
-  d.scrollIntoView({behavior:'smooth',block:'start'});
-}
-function askQuestion(qText){
-  const think=document.getElementById('think');
-  if(think.classList.contains('on'))return;
-  const key=pendingAcot;pendingAcot=null;
+
+function startNewQA(question) {
+  lastQuestion = question;
+  newQMode = false;
+  setDock(COPY.askPh);
+  const think = document.getElementById('think');
+  const s = stream();
+  clear(s);
+  document.getElementById('conv-title').textContent =
+    question.length > 18 ? question.slice(0, 18) + '⋯' : question;
+  document.querySelectorAll('.hist-item').forEach(i => i.classList.remove('current'));
+  s.appendChild(secLabel(COPY.qLabel, true));
+  s.appendChild(el('p', { class: 'q-text' }, question));
   think.classList.add('on');
-  setTimeout(()=>{
+
+  api.ask(question).then(d => {
     think.classList.remove('on');
-    const ans=key&&ACOT_ANSWERS[key]
-      ? ACOT_ANSWERS[key]
-      : '修法將非法棄置事業廢棄物的刑責上限提高至 7 年，並增訂沒入清運車輛的規定；違規土地將公告列管，清除與復原費用由行為人負擔<sup>[1]</sup>。';
-    appendQA(qText,ans);
-  },1400);
+    if (!d || !d.answer) { renderState('empty'); return; }
+    s.appendChild(secLabel(COPY.aLabel));
+    s.appendChild(el('p', { class: 'a-text' }, answerNodes(d.answer)));
+    if (d.sources && d.sources.length) {
+      s.appendChild(secLabel(COPY.srcLabel));
+      d.sources.forEach(src => s.appendChild(sourceRow(src)));
+    }
+    s.appendChild(briefCTA());
+    const st = document.getElementById('ask-status');
+    if (st && d.status) st.textContent = d.status;
+    currentConversation = d;
+    renderPanels(d);
+  }).catch(() => {
+    think.classList.remove('on');
+    renderState('error', () => startNewQA(question));
+  });
 }
-document.getElementById('ask-more').addEventListener('click',()=>{
-  const inp=document.getElementById('dock-in');
-  const q=inp.value.trim();
-  if(newQMode){
-    if(!q){inp.focus();inp.placeholder='請先輸入想查的問題';return}
-    newQMode=false;inp.value='';inp.placeholder='追問這則新聞⋯';
+
+function askFollowUp(question) {
+  const think = document.getElementById('think');
+  if (think.classList.contains('on')) return;
+  const key = pendingAcot;
+  pendingAcot = null;
+  think.classList.add('on');
+
+  const done = text => { think.classList.remove('on'); appendFollowUp(question, text); };
+
+  if (key) {
+    api.acotAnswer(key)
+      .then(text => setTimeout(() => done(text), USE_MOCK ? TIMING.think : 0))
+      .catch(() => { think.classList.remove('on'); renderState('error', () => askFollowUp(question)); });
+  } else {
+    setTimeout(() => done(
+      '修法將非法棄置事業廢棄物的刑責上限提高至 7 年，並增訂沒入清運車輛的規定；違規土地將公告列管，清除與復原費用由行為人負擔[1]。'
+    ), TIMING.think);
+  }
+}
+
+document.getElementById('ask-more').addEventListener('click', () => {
+  const inp = document.getElementById('dock-in');
+  const q = inp.value.trim();
+  if (newQMode) {
+    if (!q) { inp.focus(); inp.placeholder = '請先輸入想查的問題'; return; }
+    inp.value = '';
     startNewQA(q);
     return;
   }
-  askQuestion(q||'罰則具體提高了多少？');
-  inp.value='';
+  askFollowUp(q || COPY.defaultFollow);
+  inp.value = '';
 });
-document.getElementById('dock-in').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){e.preventDefault();document.getElementById('ask-more').click();}
+document.getElementById('dock-in').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); document.getElementById('ask-more').click(); }
 });
 
-/* ACOT：把問句送進主要提問框 */
-document.querySelector('#scr-1 .pane-right').addEventListener('click',e=>{
-  const btn=e.target.closest('.acot-run');
-  if(!btn)return;
-  const dock=document.getElementById('dock'),inp=document.getElementById('dock-in');
-  newQMode=false;
-  inp.value=btn.dataset.q;
-  pendingAcot=btn.dataset.a;
+/* ACOT：把問句送進主要提問框（事件委派，重新渲染後不必重綁） */
+document.querySelector('#scr-1 .pane-right').addEventListener('click', e => {
+  const btn = e.target.closest('.acot-run');
+  if (!btn) return;
+  const dock = document.getElementById('dock');
+  const inp = document.getElementById('dock-in');
+  newQMode = false;
+  inp.value = btn.dataset.q;
+  pendingAcot = btn.dataset.a;
   dock.classList.add('flash');
-  dock.scrollIntoView({behavior:'smooth',block:'center'});
+  dock.scrollIntoView({ behavior: 'smooth', block: 'center' });
   inp.focus();
-  const prev=btn.textContent;
-  btn.textContent='已送入提問框';btn.classList.add('done');
-  setTimeout(()=>dock.classList.remove('flash'),1800);
-  setTimeout(()=>{btn.textContent=prev;btn.classList.remove('done')},2600);
+  const prev = btn.textContent;
+  btn.textContent = COPY.sentToDock;
+  btn.classList.add('done');
+  setTimeout(() => dock.classList.remove('flash'), TIMING.flash);
+  setTimeout(() => { btn.textContent = prev; btn.classList.remove('done'); }, TIMING.flash + 800);
 });
 
-/* ---------- 新的提問 ---------- */
-document.getElementById('new-q').addEventListener('click',()=>{
-  newQMode=true;
-  document.getElementById('conv-title').textContent='新的提問';
-  document.querySelectorAll('.hist-item').forEach(i=>i.classList.remove('current'));
-  document.getElementById('qa-stream').innerHTML=
-    '<div class="sec-lbl" style="margin-top:18px">新的提問</div>'+
-    '<p class="a-text" style="color:var(--mute);font-size:13px">在下方輸入框寫下想查的事件，或先選一個方向。</p>'+
-    '<div class="ask-chips" style="margin-top:14px">'+
-      '<button class="ask-chip">廢清法修法後，地方政府要新增哪些執法措施？</button>'+
-      '<button class="ask-chip">長榮航空地勤招募釋出多少職缺？起薪與報名期限？</button>'+
-      '<button class="ask-chip">高鐵對民眾生活型態帶來哪些影響？</button>'+
-    '</div>';
-  const inp=document.getElementById('dock-in');
-  inp.value='';inp.placeholder='輸入新的提問⋯';
-  document.getElementById('dock').classList.add('flash');
-  setTimeout(()=>document.getElementById('dock').classList.remove('flash'),1800);
-  inp.focus();
-  document.querySelectorAll('#qa-stream .ask-chip').forEach(b=>b.addEventListener('click',()=>{
-    inp.value=b.textContent;inp.focus();
-  }));
-});
-function startNewQA(qText){
-  const stream=document.getElementById('qa-stream'),think=document.getElementById('think');
-  const key=qText.includes('長榮')?'eva':qText.includes('高鐵')?'hsr':qText.includes('高金素梅')||qText.includes('助理費')?'kao':'waste';
-  document.getElementById('conv-title').textContent=qText.length>18?qText.slice(0,18)+'⋯':qText;
-  document.querySelectorAll('.hist-item').forEach(i=>i.classList.remove('current'));
-  stream.innerHTML='<div class="sec-lbl" style="margin-top:18px">你的提問</div><p class="q-text">'+qText+'</p>';
-  think.classList.add('on');
-  setTimeout(()=>{
-    think.classList.remove('on');
-    const c=CONVERSATIONS[key];
-    const d=document.createElement('div');
-    d.innerHTML='<div class="sec-lbl">NEWSLLM 的回答</div><p class="a-text">'+c.answer+'</p>'+
-      '<div class="sec-lbl">出處</div>'+c.sources;
-    d.style.animation='fadeUp .5s var(--ease)';
-    stream.appendChild(d);
-    renderPanels(key);
-    bindLocate();
-  },1400);
-}
-
-/* ---------- 稿件審查 ---------- */
-function focusPair(mk,sug){
-  document.querySelectorAll('.mk').forEach(x=>x.classList.remove('focus'));
-  document.querySelectorAll('.sug').forEach(x=>x.classList.remove('focus'));
-  if(mk)mk.classList.add('focus');
-  if(sug)sug.classList.add('focus');
-}
-document.querySelectorAll('.mk').forEach(mk=>{
-  mk.addEventListener('click',()=>{
-    const sug=document.getElementById(mk.dataset.sug);
-    focusPair(mk,sug);
-    if(sug)sug.scrollIntoView({behavior:'smooth',block:'center'});
-  });
-});
-document.querySelectorAll('.sug').forEach(sug=>{
-  sug.addEventListener('click',e=>{
-    if(e.target.closest('.act')||e.target.closest('.dismiss'))return;
-    const mk=document.querySelector('.mk[data-sug="'+sug.id+'"]');
-    focusPair(mk,sug);
-    if(mk)mk.scrollIntoView({behavior:'smooth',block:'center'});
-  });
-});
-document.querySelectorAll('.dismiss').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const sug=btn.closest('.sug');
-    sug.style.transition='opacity .3s,transform .3s';
-    sug.style.opacity='0';sug.style.transform='translateX(12px)';
-    setTimeout(()=>sug.remove(),320);
-  });
-});
-document.querySelectorAll('.act-insert').forEach(btn=>{
-  btn.addEventListener('click',()=>{btn.textContent='已插入引用';btn.classList.add('done')},{once:true});
-});
-let reviewTimers=[];
-function revealSuggestions(){
-  reviewTimers.forEach(clearTimeout);reviewTimers=[];
-  const cards=[...document.querySelectorAll('#sug-panel .sug')];
-  const status=document.getElementById('review-status');
-  const count=document.getElementById('review-count');
-  const button=document.getElementById('recheck');
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  cards.forEach(card=>{card.classList.remove('reveal-show');card.classList.add('reveal-pending')});
-  status.textContent='正在逐句檢查 12 句⋯';count.textContent='分析中';button.textContent='檢查中⋯';
-  if(reduce){
-    cards.forEach(card=>{card.classList.remove('reveal-pending');card.classList.add('reveal-show')});
-    status.textContent='已檢查 12 句 · 找到佐證 1 處';count.textContent=cards.length+' 項建議';button.textContent='重新檢查';return;
+/* 出處定位（事件委派） */
+document.querySelector('#scr-1 .pane-right').addEventListener('click', e => {
+  const btn = e.target.closest('.locate');
+  if (!btn) return;
+  document.querySelectorAll('.src-row').forEach(s => s.classList.remove('flash'));
+  const t = document.getElementById(btn.dataset.src);
+  if (t) {
+    t.classList.add('flash');
+    t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => t.classList.remove('flash'), TIMING.locate);
   }
-  cards.forEach((card,i)=>{
-    reviewTimers.push(setTimeout(()=>{
-      card.classList.remove('reveal-pending');card.classList.add('reveal-show');
-      count.textContent='已找到 '+(i+1)+' 項';
-      if(i===cards.length-1){status.textContent='已檢查 12 句 · 找到佐證 1 處';count.textContent=cards.length+' 項建議';button.textContent='重新檢查'}
-    },380+i*520));
+});
+
+/* 新的提問 */
+document.getElementById('new-q').addEventListener('click', () => {
+  newQMode = true;
+  document.getElementById('conv-title').textContent = COPY.newQLabel;
+  document.querySelectorAll('.hist-item').forEach(i => i.classList.remove('current'));
+  const s = stream();
+  clear(s);
+  s.appendChild(secLabel(COPY.newQLabel, true));
+  s.appendChild(el('p', { class: 'a-text', style: 'color:var(--mute);font-size:13px' }, COPY.newQHint));
+  const chips = el('div', { class: 'ask-chips', style: 'margin-top:14px' });
+  ['廢清法修法後，地方政府要新增哪些執法措施？',
+   '長榮航空地勤招募釋出多少職缺？起薪與報名期限？',
+   '高鐵對民眾生活型態帶來哪些影響？'].forEach(txt => {
+    const c = el('button', { class: 'ask-chip', type: 'button' }, txt);
+    c.addEventListener('click', () => {
+      const inp = document.getElementById('dock-in');
+      inp.value = txt;
+      inp.focus();
+    });
+    chips.appendChild(c);
+  });
+  s.appendChild(chips);
+  setDock(COPY.newQPh);
+  const dock = document.getElementById('dock');
+  dock.classList.add('flash');
+  setTimeout(() => dock.classList.remove('flash'), TIMING.flash);
+  document.getElementById('dock-in').focus();
+});
+
+
+/* =====================================================================
+   研究報告 Editorial Brief
+   欄位：01 一句話定調 / 02 關鍵事實 / 03 事件脈絡 / 04 各方立場
+        05 尚待查證 / 06 建議採訪對象 / 07 可用引述 / 08 風險提示 / 09 來源清單
+   資料來源：既有對話物件；brief 欄位可選，缺少時由 voices / acot / timeline 推導
+   ===================================================================== */
+let briefData = null;
+
+function buildBrief(d) {
+  const b = d.brief || {};
+  return {
+    topic: d.title,
+    question: d.question,
+    nut: b.nut || d.answer.replace(/\[\d+\]/g, '').split('。')[0] + '。',
+    facts: b.facts || (d.answer.replace(/\[\d+\]/g, '').split('。')
+      .filter(x => x.trim()).slice(0, 4).map(t => ({ text: t.trim(), ref: [] }))),
+    timeline: d.timeline || [],
+    positions: (d.voices || []).map(v => ({ who: v.who, stance: v.infer, tone: v.emotion })),
+    open: (d.acot || []).map(a => ({ kind: a.kind, q: a.q })),
+    interviews: d.absent ? [{ who: d.absent.who, why: d.absent.note }] : [],
+    quotes: b.quotes || [],
+    risks: b.risks || ['本報告由檢索結果生成，所有數據與引述在發稿前仍須人工向原始來源複核。'],
+    sources: d.sources || [],
+    coverage: d.status || ''
+  };
+}
+
+
+/* 對話有結果後，在出處下方出現「生成研究報告」的下一步 */
+function svgWeave() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', '0 0 42 24');
+  svg.setAttribute('aria-hidden', 'true');
+  [['M2 17 C 10 17, 12 7, 21 7 S 33 17, 40 12', ''],
+   ['M2 12 C 10 12, 13 19, 21 19 S 33 6, 40 17', 'b']].forEach(function (pair) {
+    const path = document.createElementNS(NS, 'path');
+    path.setAttribute('d', pair[0]);
+    if (pair[1]) path.setAttribute('class', pair[1]);
+    svg.appendChild(path);
+  });
+  return svg;
+}
+function briefCTA() {
+  const btn = el('button', { class: 'brief-cta', type: 'button' },
+    el('span', { class: 'glyph' }, svgWeave()),
+    el('span', null, '生成研究報告'),
+    el('span', { class: 'arr' }, '\u2192'));
+  btn.addEventListener('click', function () {
+    if (!currentConversation) return;
+    renderBrief(currentConversation);
+    goto(3);
+  });
+  return btn;
+}
+
+function bsec(num, title, hint, body) {
+  return el('section', { class: 'bsec' },
+    el('div', { class: 'bsec-h' },
+      el('span', { class: 'bsec-n' }, num),
+      el('h2', null, title),
+      hint ? el('span', { class: 'hint' }, hint) : null),
+    body);
+}
+
+function renderBrief(d) {
+  const b = buildBrief(d);
+  briefData = b;
+  const root = document.getElementById('brief-body');
+  clear(root);
+  document.getElementById('brief-topic').textContent = b.topic;
+
+  const now = new Date();
+  const stamp = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' +
+    String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' +
+    String(now.getMinutes()).padStart(2, '0');
+
+  root.appendChild(el('header', { class: 'brief-head' },
+    el('div', { class: 'brief-kicker' }, '研究報告 · 採訪前置背景整理'),
+    el('h1', null, b.topic),
+    el('div', { class: 'brief-meta' },
+      el('span', null, '產製時間 ', el('b', null, stamp)),
+      el('span', null, '來源 ', el('b', null, b.sources.length + ' 則公媒報導')),
+      el('span', null, '溯源 ', el('b', null, b.coverage || '—')))));
+
+  // 01 一句話定調
+  root.appendChild(bsec('01', '一句話定調', '給編輯台的第一句話',
+    el('p', { class: 'b-nut' }, b.nut)));
+
+  // 02 關鍵事實
+  const facts = el('ul', { class: 'b-list' });
+  b.facts.forEach(f => {
+    const li = el('li');
+    const span = el('span', null, f.text);
+    (f.ref || []).forEach(n => span.appendChild(el('sup', { class: 'ref' }, '[' + n + ']')));
+    li.appendChild(span);
+    facts.appendChild(li);
+  });
+  root.appendChild(bsec('02', '關鍵事實', '每則對應下方來源編號', facts));
+
+  // 03 事件脈絡
+  if (b.timeline.length) {
+    const ul = el('ul', { class: 'b-time' });
+    b.timeline.forEach(t => ul.appendChild(
+      el('li', null, el('time', null, t.time), t.title + '　' + (t.note || ''))));
+    root.appendChild(bsec('03', '事件脈絡', b.timeline.length + ' 個節點', ul));
+  }
+
+  // 04 各方立場
+  if (b.positions.length) {
+    const tb = el('table', { class: 'b-table' },
+      el('thead', null, el('tr', null,
+        el('th', null, '對象'), el('th', null, '主張'), el('th', null, '基調'))));
+    const body = el('tbody');
+    b.positions.forEach(p => body.appendChild(el('tr', null,
+      el('td', null, p.who), el('td', null, p.stance), el('td', null, p.tone))));
+    tb.appendChild(body);
+    root.appendChild(bsec('04', '各方立場', '由報導引述歸納', tb));
+  }
+
+  // 05 尚待查證
+  if (b.open.length) {
+    const ul = el('ul', { class: 'b-list' });
+    b.open.forEach(o => ul.appendChild(el('li', null, el('span', null, '【' + o.kind + '】' + o.q))));
+    root.appendChild(bsec('05', '尚待查證', '發稿前建議補齊', ul));
+  }
+
+  // 06 建議採訪對象
+  if (b.interviews.length) {
+    const ul = el('ul', { class: 'b-list' });
+    b.interviews.forEach(i => ul.appendChild(
+      el('li', null, el('span', null, i.who + '　—　' + i.why))));
+    root.appendChild(bsec('06', '建議採訪對象', '本篇缺席的聲音', ul));
+  }
+
+  // 07 可用引述
+  if (b.quotes.length) {
+    const wrap = el('div');
+    b.quotes.forEach(q => wrap.appendChild(el('blockquote', { class: 'b-quote' },
+      el('p', null, '「' + q.text + '」'),
+      el('cite', null, q.who + '　·　' + q.src))));
+    root.appendChild(bsec('07', '可用引述', '引用前請回原文核對', wrap));
+  }
+
+  // 08 風險提示
+  const risks = el('div');
+  b.risks.forEach(r => risks.appendChild(el('div', { class: 'b-risk' }, el('span', null, r))));
+  root.appendChild(bsec('08', '風險提示', '不可直接引用的部分', risks));
+
+  // 09 來源清單
+  if (b.sources.length) {
+    const wrap = el('div');
+    b.sources.forEach(sc => wrap.appendChild(el('div', { class: 'b-src' },
+      el('span', { class: 'n' }, '[' + sc.n + ']'),
+      el('span', { class: 't' }, sc.title),
+      el('span', { class: 'm' }, sc.media + (sc.date ? ' · ' + sc.date : '')),
+      sc.url ? el('a', { class: 'link', href: sc.url, target: '_blank', rel: 'noopener' }, '原文 ↗') : null)));
+    root.appendChild(bsec('09', '來源清單', b.sources.length + ' 則', wrap));
+  }
+
+  root.appendChild(el('footer', { class: 'brief-foot' },
+    'NewsLLM 專家版 · 研究報告由公媒資料庫檢索結果生成。',
+    el('br'),
+    '所有事實、數據與引述在發稿前仍須人工向原始來源複核。PROTOTYPE — 內容為示意資料。'));
+
+  document.getElementById('brief-status').textContent =
+    '共 ' + b.facts.length + ' 則關鍵事實 · ' + b.open.length + ' 項待查證 · ' + b.sources.length + ' 則來源';
+}
+
+function briefToText(b) {
+  if (!b) return '';
+  const L = [];
+  L.push('【研究報告】' + b.topic, '');
+  L.push('一句話定調：' + b.nut, '');
+  L.push('關鍵事實：');
+  b.facts.forEach(f => L.push('　· ' + f.text + ((f.ref || []).length ? ' [' + f.ref.join('][') + ']' : '')));
+  L.push('', '各方立場：');
+  b.positions.forEach(p => L.push('　· ' + p.who + '：' + p.stance + '（' + p.tone + '）'));
+  L.push('', '尚待查證：');
+  b.open.forEach(o => L.push('　· 【' + o.kind + '】' + o.q));
+  L.push('', '建議採訪對象：');
+  b.interviews.forEach(i => L.push('　· ' + i.who + ' — ' + i.why));
+  L.push('', '風險提示：');
+  b.risks.forEach(r => L.push('　· ' + r));
+  L.push('', '來源清單：');
+  b.sources.forEach(s => L.push('　[' + s.n + '] ' + s.title + '（' + s.media + ' · ' + s.date + '）' + (s.url || '')));
+  return L.join('\n');
+}
+
+document.getElementById('brief-back').addEventListener('click', () => goto(1));
+document.getElementById('brief-copy').addEventListener('click', e => {
+  const btn = e.currentTarget;
+  navigator.clipboard.writeText(briefToText(briefData))
+    .then(() => { btn.textContent = '已複製'; setTimeout(() => btn.textContent = '複製全文', 1600); })
+    .catch(() => { btn.textContent = '複製失敗'; setTimeout(() => btn.textContent = '複製全文', 1600); });
+});
+document.getElementById('brief-export').addEventListener('click', () => window.print());
+
+/* =====================================================================
+   稿件審查
+   ===================================================================== */
+function focusPair(mk, sug) {
+  document.querySelectorAll('.mk').forEach(x => x.classList.remove('focus'));
+  document.querySelectorAll('.sug').forEach(x => x.classList.remove('focus'));
+  if (mk) mk.classList.add('focus');
+  if (sug) sug.classList.add('focus');
+}
+document.querySelectorAll('.mk').forEach(mk => {
+  mk.addEventListener('click', e => {
+    e.preventDefault();
+    const sug = document.getElementById(mk.dataset.sug);
+    focusPair(mk, sug);
+    if (sug) sug.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+document.getElementById('sug-panel').addEventListener('click', e => {
+  const locate = e.target.closest('.sug-locate');
+  const sug = e.target.closest('.sug');
+  if (!sug) return;
+  if (e.target.closest('.dismiss')) {
+    sug.style.transition = 'opacity .3s,transform .3s';
+    sug.style.opacity = '0';
+    sug.style.transform = 'translateX(12px)';
+    setTimeout(() => sug.remove(), TIMING.dismiss);
+    return;
+  }
+  if (e.target.closest('.act-insert')) {
+    const b = e.target.closest('.act-insert');
+    b.textContent = COPY.inserted;
+    b.classList.add('done');
+    return;
+  }
+  if (locate || !e.target.closest('.act')) {
+    const mk = document.querySelector('.mk[data-sug="' + sug.id + '"]');
+    focusPair(mk, sug);
+    if (mk) mk.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+let reviewTimers = [];
+function revealSuggestions() {
+  reviewTimers.forEach(clearTimeout);
+  reviewTimers = [];
+  const cards = [...document.querySelectorAll('#sug-panel .sug')];
+  const status = document.getElementById('review-status');
+  const count = document.getElementById('review-count');
+  const button = document.getElementById('recheck');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  cards.forEach(c => { c.classList.remove('reveal-show'); c.classList.add('reveal-pending'); });
+  status.textContent = COPY.reviewChecking;
+  count.textContent = '分析中';
+  button.textContent = COPY.rechecking;
+
+  const finish = () => {
+    status.textContent = COPY.reviewDone;
+    count.textContent = cards.length + ' 項建議';
+    button.textContent = COPY.recheck;
+  };
+  if (reduce) {
+    cards.forEach(c => { c.classList.remove('reveal-pending'); c.classList.add('reveal-show'); });
+    finish();
+    return;
+  }
+  cards.forEach((card, i) => {
+    reviewTimers.push(setTimeout(() => {
+      card.classList.remove('reveal-pending');
+      card.classList.add('reveal-show');
+      count.textContent = '已找到 ' + (i + 1) + ' 項';
+      if (i === cards.length - 1) finish();
+    }, TIMING.revealStart + i * TIMING.revealStep));
   });
 }
-document.getElementById('recheck').addEventListener('click',revealSuggestions);
+document.getElementById('recheck').addEventListener('click', revealSuggestions);
 
-/* ---------- init ---------- */
-renderPanels('waste');
-bindLocate();
+/* =====================================================================
+   初始化
+   ===================================================================== */
+loadConversation('waste');
 
-/* ---------- PWA ---------- */
-if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+/* PWA */
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
+
 </script>
 </body>
 </html>
